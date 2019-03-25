@@ -1,0 +1,1 @@
+class TransitionRules(val from: String, val to: List<String>)
