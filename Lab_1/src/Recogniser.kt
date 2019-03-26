@@ -1,43 +1,43 @@
-import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Recogniser(val listOfRules: List<TransitionRules>, val alphabet: Array<Symbol>){
+class Recogniser(private val listOfRules: List<TransitionRules>,private val alphabet: Array<Symbol>,private val relations: Array<Array<Relation>>){
 
-    val relations: Array<Array<Relation>>
-    val store: Stack<Symbol>
-    val msg: String = "Input does not belong to a grammar"
+    private val store: Stack<Symbol> = Stack()
+    private val msg: String = "Input does not belong to a grammar"
 
     init{
-        relations =  Array(alphabet.size, ({ Array(alphabet.size, ({Relation.LESS})) }))
-        store = Stack()
-        store.push(Symbol("#") )
-
+        store.push(alphabet[alphabet.size-1])
     }
 
     fun recognise(input: ArrayList<Symbol>){
-        input.forEach{
+        input.add(alphabet[alphabet.size-1])
+
+        var i = 0
+        while(i<input.size){
             val storeEl = store.peek()
-            val relation = compare(storeEl, it)
-            val current = it
-            input.remove(it)
+            if( input[i] == alphabet[alphabet.size-1] && store.size == 2 && storeEl == alphabet[0] )
+                break
+            val relation = compare(storeEl, input[i])
 
             when(relation){
                 Relation.NONE -> throw Exception(msg)
-                Relation.LESS -> convert(current)
-                else -> store.push(current)
+                Relation.MORE -> {
+                    convert()
+                    i--
+                }
+                else -> store.push(input[i])
             }
+
+            i++
         }
 
-        val sym = store.pop()
-        if( (sym != alphabet[0]) || (store.peek() != alphabet[alphabet.size-1]) )
-            throw Exception(msg)
-
+        println("Recognised")
     }
 
-    fun convert(element: Symbol){
+    private fun convert(){
         var condition = true
-        val base = arrayListOf(element)
+        val base = arrayListOf(Symbol(" "))
 
         while(condition){
             val newVal = store.pop()
@@ -46,49 +46,37 @@ class Recogniser(val listOfRules: List<TransitionRules>, val alphabet: Array<Sym
                 condition = false
         }
 
+        base.removeAt(0)
+        base.reverse()
         val newSymbol = findRule(base)
 
         store.push(newSymbol)
     }
 
-    fun findRule(base: ArrayList<Symbol>): Symbol{
-        listOfRules.forEach{
-            if(base == it.to) return it.from
+    private fun findRule(base: ArrayList<Symbol>): Symbol{
+        for(it in listOfRules){
+            if(compareLists(base,it.to))
+                return it.from
         }
         throw Exception(msg)
     }
 
-    fun compare(stack: Symbol, input: Symbol): Relation{
-        val stackInd = alphabet.indexOf(stack)
-        val inputInd = alphabet.indexOf(input)
+    private fun compareLists(first: ArrayList<Symbol>, second: ArrayList<Symbol>): Boolean{
+        if(first.size != second.size) return false
+        first.forEachIndexed { index, symbol ->
+            if(symbol.value != second[index].value)
+                return false
+        }
+        return true
+    }
+
+    private fun compare(stack: Symbol, input: Symbol): Relation{
+        val stackSymbol = alphabet.find{it.value == stack.value}
+        val inputSymbol = alphabet.find{it.value == input.value}
+        val stackInd = alphabet.indexOf(stackSymbol)
+        val inputInd = alphabet.indexOf(inputSymbol)
         return relations[stackInd][inputInd]
     }
-
-    fun fillInRelationTable(){
-        val fileLines = readFileAsLinesUsingBufferedReader("E:/relations.txt")
-
-        fileLines.forEachIndexed{ lineNum, value ->
-            val line = value.toCharArray()
-            var index = 0
-            line.forEach {
-                when(it){
-                    ';' -> index++
-                    '>' -> placeInRelationTable(lineNum, index, Relation.MORE)
-                    '<' -> placeInRelationTable(lineNum, index, Relation.LESS)
-                    '=' -> placeInRelationTable(lineNum, index, Relation.EQUAL)
-                    else -> placeInRelationTable(lineNum, index, Relation.NONE)
-                }
-            }
-            placeInRelationTable(lineNum, alphabet.size-1, Relation.MORE)
-        }
-    }
-
-    private fun placeInRelationTable(lineNum: Int, columnNum: Int, relation: Relation){
-        relations[lineNum][columnNum] = relation
-    }
-
-    private fun readFileAsLinesUsingBufferedReader(fileName: String): List<String>
-            = File(fileName).bufferedReader().readLines()
 
 }
 
@@ -96,4 +84,6 @@ enum class Relation(val sign: String) {
     EQUAL("="), MORE(">"), LESS("<"), NONE("")
 }
 
-class TransitionRules(val from: Symbol, val to: List<Symbol>)
+class TransitionRules(val from: Symbol, val to: ArrayList<Symbol>)
+
+class Symbol(val value: String)
