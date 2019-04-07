@@ -56,7 +56,14 @@ class Recogniser(private val listOfRules: List<TransitionRules>,private val alph
     private fun findRule(base: ArrayList<Symbol>): Symbol{
         for(it in listOfRules){
             if(compareLists(base,it.to))
+            {
+                print("${it.from.value} ->")
+                it.to.forEach{ sym ->
+                    print(sym.value)
+                }
+
                 return it.from
+            }
         }
         throw Exception(msg)
     }
