@@ -4,7 +4,7 @@ class LexicalAnaliser(private val file: List<String>){
 
     fun analise(): ArrayList<Lexem>{
         file.forEachIndexed{index, line ->
-            lineParser(line, index)
+            lineAnaliser(line, index)
 
             var tmp = 0
             lineLexemCount.forEach{ tmp += it}
@@ -13,45 +13,62 @@ class LexicalAnaliser(private val file: List<String>){
         return lexemTable
     }
 
-    private fun lineParser(lexemStr: String, lineIndex: Int){
+    private fun lineAnaliser(line: String, lineIndex: Int){
         var lexem = ""
-        for(index: Int in 0..(lexemStr.length-1) ){
-            val c = lexemStr[index]
-            val isEndOfLine = index == lexemStr.length - 1
+        var index = 0
+
+        while(index < line.length){
+            val c = line[index]
+            val isEndOfLine = index == line.length - 1
             val isSpaceSymbol = c == ' '
-            val isBeginOfAComment = c == '/' && !isEndOfLine && lexemStr[index+1]=='/'
-            val isRelationOperator = Relations.values().map { it.lexem }.contains(c.toString())
-            val isMathOperator = MathOperators.values().map { it.lexem }.contains(c.toString())
+            val isBeginOfAComment = !isEndOfLine && c == '/' && line[index+1]=='/'
 
-            if(isSpaceSymbol || isRelationOperator || isMathOperator || isBeginOfAComment || isEndOfLine) {
-                try{
-                    if(lexem != "" ) lexemRecognition(lexem)
-                }
-                catch(e: Exception){
-                    println("Error in parsing expression '$lexem' at position ${lineIndex+1} : ${index+1}")
-                }
+            if(isBeginOfAComment)
+                break
 
-                if(isBeginOfAComment) break
-                if(isRelationOperator) addToTable(c.toString(), LexemType.RELATION_OPERATOR)
-                if(isMathOperator) addToTable(c.toString(), LexemType.MATH_OPERATOR)
-                lexem = ""
+
+            lexem+=c
+            val type = recognise(lexem)
+            val typeOfBiggerLexem = if(!isEndOfLine) recognise(lexem + line[index + 1]) else LexemType.UNRECOGNISED
+
+            try {
+                if(typeOfBiggerLexem != LexemType.UNRECOGNISED) {
+                    index++
+                    continue
+                }
+                else if(type != LexemType.UNRECOGNISED ){
+                    addToTable(lexem, type)
+                    lexem = ""
+                }
+                else if (isSpaceSymbol)
+                    lexem=""
+                else throw Exception()
+            }
+            catch(e: Exception){
+                println("Error in parsing expression '$lexem' at position ${lineIndex+1} : ${index+1}")
             }
 
-            if(!isSpaceSymbol && !isRelationOperator && !isMathOperator)
-                lexem+=c
+            index++
         }
     }
 
-    private fun lexemRecognition(id: String){
-        if(Words.values().map { it.lexem }.contains(id))
-            addToTable(id, LexemType.WORD)
-        else if(id.matches("^[0-9]+".toRegex())){
-            val value = Integer.toHexString(id.toInt())
-            addToTable(value.toString().toUpperCase(), LexemType.CONST)
-        }
-        else if(id.matches("^[a-zA-Z]+".toRegex()))
-            addToTable(id, LexemType.IDENTIFIER)
-        else throw Exception()
+    private fun recognise(lexem: String): LexemType{
+        if(Words.values().map { it.lexem }.contains(lexem))
+            return LexemType.WORD
+
+        if(MathOperators.values().map { it.lexem }.contains(lexem))
+            return LexemType.MATH_OPERATOR
+
+        if(Relations.values().map { it.lexem }.contains(lexem))
+            return LexemType.RELATION_OPERATOR
+
+        if(lexem.matches("^[0-9]+".toRegex()))
+            return LexemType.CONST
+
+        if(lexem.matches("^[a-zA-Z]+".toRegex()))
+            return LexemType.IDENTIFIER
+
+        return LexemType.UNRECOGNISED
     }
 
     private fun addToTable(lexem: String, type: LexemType){
@@ -67,10 +84,14 @@ enum class LexemType(val code: Int){
     MATH_OPERATOR(1),
     WORD(2),
     IDENTIFIER(3),
-    CONST(4)
+    CONST(4),
+    UNRECOGNISED(5)
 }
 
 enum class Words(val lexem: String) {
+    Is(":="),
+    LBRACE("("),
+    RBRACE(")"),
     Begin("Begin"),
     End("End"),
     Var("Var"),
