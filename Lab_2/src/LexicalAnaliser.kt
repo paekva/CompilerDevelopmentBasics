@@ -1,59 +1,76 @@
-class LexicalAnaliser(private val file: List<String>) {
-    val lexemTable: ArrayList<Lexem> = arrayListOf()
-    val indentTable: ArrayList<Lexem> = arrayListOf()
-    val lineLexemCount: ArrayList<Int> = arrayListOf()
+class LexicalAnalyzer(private val charBuffer: CharArray) {
 
-    fun analise() {
-        file.forEachIndexed { index, line ->
-            lineAnaliser(line, index)
+    private var currentSymbolPosition: Int = 0
+    private fun getCurrentSymbol(): Char = charBuffer[currentSymbolPosition]
+    private fun getNextSymbol(): Char = if(currentSymbolPosition + 1 < charBuffer.size) charBuffer[currentSymbolPosition + 1] else '@'
+    private fun isStartOfTheComment(): Boolean = getCurrentSymbol() == '/' && getNextSymbol() == '/'
+    private fun isEndOfLine() = getCurrentSymbol() == '\r' && getNextSymbol() == '\n'
 
-            var tmp = 0
-            lineLexemCount.forEach { tmp += it }
-            lineLexemCount.add(tmp + lexemTable.size - 1)
-        }
-    }
-
-    private fun lineAnaliser(line: String, lineIndex: Int) {
+    fun analyze(){
         var lexem = ""
-        var index = 0
+        while(currentSymbolPosition < charBuffer.size){
+            val isSpaceSymbol = getCurrentSymbol() == ' '
+            val isCommaSymbol = getCurrentSymbol() == ','
 
-        while (index < line.length) {
-            val c = line[index]
-            val isEndOfLine = index == line.length - 1
-            val isSpaceSymbol = c == ' '
-            val isBeginOfAComment = !isEndOfLine && c == '/' && line[index + 1] == '/'
+            if(isStartOfTheComment()) getComment()
 
-            if (isBeginOfAComment)
-                break
-
-
-            lexem += c
+            lexem+=getCurrentSymbol()
             val type = recognise(lexem)
-            val typeOfBiggerLexem = if (!isEndOfLine) recognise(lexem + line[index + 1]) else LexemType.UNRECOGNISED
+            val typeOfBiggerLexem = recognise(lexem+getNextSymbol())
 
             try {
-
-                if (typeOfBiggerLexem != LexemType.UNRECOGNISED) {
-                    index++
+                if(isSpaceSymbol) {
+                    currentSymbolPosition++
+                    lexem = ""
                     continue
-                } else if (type != LexemType.UNRECOGNISED) {
+                }
+
+                if(typeOfBiggerLexem != LexemType.UNRECOGNISED) {
+                    currentSymbolPosition++
+                    continue
+                }
+
+                if(isCommaSymbol)
+                    addToLexemTable(",", LexemType.COMMA)
+
+                if(isEndOfLine()) {
+                    addToLexemTable("", LexemType.LINEBREAK)
+                    currentSymbolPosition++
+                }
+                else
                     addToLexemTable(lexem, type)
-                    lexem = ""
-                } else if (isSpaceSymbol)
-                    lexem = ""
-                else throw Exception()
+
+                lexem = ""
+                currentSymbolPosition++
 
             } catch (e: Exception) {
-                println("Error in parsing expression '$lexem' at position ${lineIndex + 1} : ${index + 1}")
+                // println("Error in parsing expression '$lexem' at position ${lineIndex + 1} : ${index + 1}")
             }
 
-            index++
         }
     }
 
+    private fun getComment(){
+        while(!isEndOfLine()){
+            currentSymbolPosition++
+        }
+    }
+
+    val lexemTable: ArrayList<Lexem> = arrayListOf()
+    val indentTable: ArrayList<Lexem> = arrayListOf()
+
     private fun recognise(lexem: String): LexemType {
-        if (Words.values().map { it.lexem }.contains(lexem))
-            return LexemType.WORD
+        when(lexem){
+            "Begin" -> return LexemType.BEGIN
+            "Var" -> return LexemType.VAR
+            "End" -> return LexemType.END
+            "If" -> return LexemType.IF
+            "Then" -> return LexemType.THEN
+            "Else" -> return LexemType.ELSE
+            ":=" -> return LexemType.DECLARE
+            "(" -> return LexemType.LBRACE
+            ")" -> return LexemType.RBRACE
+        }
 
         if (UniMathOperators.values().map { it.lexem }.contains(lexem)
             && lexemTable[lexemTable.size - 1].type != LexemType.IDENTIFIER && lexemTable[lexemTable.size - 1].type != LexemType.CONST
