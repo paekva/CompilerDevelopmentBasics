@@ -16,7 +16,10 @@ class LexicalAnalyzer(private val charBuffer: CharArray) {
             val isEndOfLine = isEndOfLine()
 
             if (isCommaSymbol) addToLexemTable(",", LexemType.COMMA)
-            else if(isEndOfLine) addToLexemTable("/n", LexemType.LINEBREAK)
+            else if(isEndOfLine) {
+                addToLexemTable("/n", LexemType.LINEBREAK)
+                currentSymbolPosition++
+            }
             else if(!isSpaceSymbol){
                 lexem+=getCurrentSymbol()
 
