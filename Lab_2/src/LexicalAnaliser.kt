@@ -9,44 +9,29 @@ class LexicalAnalyzer(private val charBuffer: CharArray) {
     fun analyze(){
         var lexem = ""
         while(currentSymbolPosition < charBuffer.size){
-            val isSpaceSymbol = getCurrentSymbol() == ' '
-            val isCommaSymbol = getCurrentSymbol() == ','
-
             if(isStartOfTheComment()) getComment()
 
-            lexem+=getCurrentSymbol()
-            val type = recognise(lexem)
-            val typeOfBiggerLexem = recognise(lexem+getNextSymbol())
+            val isSpaceSymbol = getCurrentSymbol() == ' '
+            val isCommaSymbol = getCurrentSymbol() == ','
+            val isEndOfLine = isEndOfLine()
 
-            try {
-                if(isSpaceSymbol) {
-                    currentSymbolPosition++
-                    lexem = ""
-                    continue
-                }
+            if (isCommaSymbol) addToLexemTable(",", LexemType.COMMA)
+            else if(isEndOfLine) addToLexemTable("/n", LexemType.LINEBREAK)
+            else if(!isSpaceSymbol){
+                lexem+=getCurrentSymbol()
+
+                val type = recognise(lexem)
+                val typeOfBiggerLexem = recognise(lexem+getNextSymbol())
 
                 if(typeOfBiggerLexem != LexemType.UNRECOGNISED) {
                     currentSymbolPosition++
                     continue
                 }
-
-                if(isCommaSymbol)
-                    addToLexemTable(",", LexemType.COMMA)
-
-                if(isEndOfLine()) {
-                    addToLexemTable("/n", LexemType.LINEBREAK)
-                    currentSymbolPosition++
-                }
-                else
-                    addToLexemTable(lexem, type)
-
-                lexem = ""
-                currentSymbolPosition++
-
-            } catch (e: Exception) {
-                // println("Error in parsing expression '$lexem' at position ${lineIndex + 1} : ${index + 1}")
+                else addToLexemTable(lexem, type)
             }
 
+            currentSymbolPosition++
+            lexem = ""
         }
     }
 
