@@ -7,17 +7,17 @@ enum class LexemType(val code: Int){
     DECLARE(3),
     IDENTIFIER(4),
     CONST(5),
-    UNRECOGNISED(6),
-    BEGIN(7),
-    END(8),
-    VAR(9),
-    IF(10),
-    THEN(11),
-    ELSE(12),
-    LBRACE(13),
-    RBRACE(14),
-    COMMA(15),
-    LINEBREAK(16)
+    BEGIN(6),
+    END(7),
+    VAR(8),
+    IF(9),
+    THEN(10),
+    ELSE(11),
+    LBRACE(12),
+    RBRACE(13),
+    COMMA(14),
+    LINEBREAK(15),
+    UNRECOGNISED(16)
 }
 
 enum class Words(val lexem: String) {

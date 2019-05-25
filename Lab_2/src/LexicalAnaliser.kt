@@ -34,7 +34,7 @@ class LexicalAnalyzer(private val charBuffer: CharArray) {
                     addToLexemTable(",", LexemType.COMMA)
 
                 if(isEndOfLine()) {
-                    addToLexemTable("", LexemType.LINEBREAK)
+                    addToLexemTable("/n", LexemType.LINEBREAK)
                     currentSymbolPosition++
                 }
                 else

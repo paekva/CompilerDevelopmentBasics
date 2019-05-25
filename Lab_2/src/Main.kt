@@ -10,10 +10,10 @@ fun main(){
 
 
 fun readFile(fileName: String): CharArray {
-    var bytes:ByteArray = File(fileName).readBytes()
-    val tmp = CharArray(bytes.size)
-    bytes.forEachIndexed { index, byte -> tmp[index] = byte.toChar() }
-    return tmp
+    val bytes:ByteArray = File(fileName).readBytes()
+    val chars = CharArray(bytes.size)
+    bytes.forEachIndexed { index, byte -> chars[index] = byte.toChar() }
+    return chars
 }
 
 
