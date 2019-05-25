@@ -61,8 +61,7 @@ class SubExpression(private val getCurrentLexeme: currentLexeme, private val mov
         children.add(subExpressionNodeOne)
 
         moveToTheNextLexeme.invoke()
-        val lexeme = getCurrentLexeme.invoke()
-        val binaryOperator = binaryOperator(lexeme)
+        val binaryOperator = binaryOperator()
         children.add(binaryOperator)
 
         moveToTheNextLexeme.invoke()
@@ -72,11 +71,8 @@ class SubExpression(private val getCurrentLexeme: currentLexeme, private val mov
         return children
     }
 
-    // <Бин.оп.> ::= "-" | "+" | "*" | "/" | ">>" | "<<" | ">" | "<" | "="
-    private fun binaryOperator(lexeme: Lexem): ASTNode? {
-        if(lexeme.type == LexemType.BIN_MATH_OPERATOR) {
-            return ASTNode(GrammarSymbols.BINARY_OPERATOR, lexeme)
-        }
-        return null
+    // <Бин.оп.>
+    private fun binaryOperator(): ASTNode? {
+        return OperatorSign(getCurrentLexeme).binaryOperator()
     }
 }

@@ -37,10 +37,8 @@ class Expression (private val getCurrentLexeme: currentLexeme, private val moveT
         return children
     }
 
+    //  <Ун.оп.>
     private fun unaryOperator(lexeme: Lexem): ASTNode? {
-        if(lexeme.type == LexemType.UNI_MATH_OPERATOR) {
-            return ASTNode(GrammarSymbols.UNARY_OPERATOR, lexeme)
-        }
-        return null
+        return OperatorSign(getCurrentLexeme).unaryOperator()
     }
 }

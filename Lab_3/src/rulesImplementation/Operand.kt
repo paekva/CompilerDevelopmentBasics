@@ -9,16 +9,17 @@ class Operand(private val getCurrentLexeme: currentLexeme) {
     // <Операнд> ::= <Идент> | <Const>
     fun analyze(): ASTNode?{
         val lexeme = getCurrentLexeme.invoke()
-        var node = identifier(lexeme)
+        var node = identifier()
 
         if(node==null)
-            node = const(lexeme)
+            node = const()
 
         return node
     }
 
     // <Идент>
-    private fun identifier(lexeme: Lexem): ASTNode?{
+    fun identifier(): ASTNode?{
+        val lexeme = getCurrentLexeme.invoke()
         if(lexeme.type == LexemType.IDENTIFIER) {
             return ASTNode(GrammarSymbols.IDENTIFIER, lexeme)
         }
@@ -26,7 +27,8 @@ class Operand(private val getCurrentLexeme: currentLexeme) {
     }
 
     // <Const>
-    private fun const(lexeme: Lexem): ASTNode?{
+    fun const(): ASTNode?{
+        val lexeme = getCurrentLexeme.invoke()
         if(lexeme.type == LexemType.CONST) {
             return ASTNode(GrammarSymbols.CONST, lexeme)
         }
