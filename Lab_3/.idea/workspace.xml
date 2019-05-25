@@ -24,10 +24,9 @@
       <file leaf-file-name="types.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/types.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret lean-forward="true" />
+            <state relative-caret-position="153">
+              <caret line="9" column="11" lean-forward="true" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
               <folding>
-                <element signature="n#!!block;n#LexemType#0" />
                 <element signature="n#!!block;n#GrammarSymbolsTypes#0" />
               </folding>
             </state>
@@ -46,14 +45,14 @@
       <file leaf-file-name="SyntaxAnaliser.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/SyntaxAnaliser.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="75" column="30" lean-forward="true" selection-start-line="75" selection-start-column="30" selection-end-line="75" selection-end-column="30" />
+            <state relative-caret-position="403">
+              <caret line="190" column="9" selection-start-line="190" selection-start-column="9" selection-end-line="190" selection-end-column="9" />
               <folding>
                 <element signature="e#721#899#0" />
-                <element signature="n#!!block;n#variablesList#1;n#!!block;n#SyntaxAnalyzer#0" />
-                <element signature="n#!!block;n#operator#0;n#!!block;n#SyntaxAnalyzer#0" />
-                <element signature="n#!!block;n#subexpression#0;n#!!block;n#SyntaxAnalyzer#0" />
-                <element signature="n#!!block;n#assignment#1;n#!!block;n#SyntaxAnalyzer#0" />
+                <element signature="n#!!block;n#declareVariables#0;n#!!block;n#SyntaxAnalyzer#0" />
+                <element signature="n#!!block;n#declareVariables#1;n#!!block;n#SyntaxAnalyzer#0" />
+                <element signature="n#!!block;n#operatorsList#0;n#!!block;n#SyntaxAnalyzer#0" />
+                <element signature="n#!!block;n#assigment#0;n#!!block;n#SyntaxAnalyzer#0" />
                 <element signature="n#!!block;n#getNextLexem#0;n#!!block;n#SyntaxAnalyzer#0" />
               </folding>
             </state>
@@ -72,6 +71,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>1</find>
+      <find>constructTree</find>
     </findStrings>
     <replaceStrings>
       <replace>NONTERMINAL</replace>
@@ -225,7 +225,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22866000" />
+    <option name="totallyTimeSpent" value="27050000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -240,15 +240,15 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32838285" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.105610564" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.11881188" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.2739274" />
+      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.11551155" />
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
@@ -286,18 +286,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/SyntaxAnaliser.kt</url>
-          <line>15</line>
+          <line>53</line>
           <properties />
-          <option name="timeStamp" value="15" />
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/SyntaxAnaliser.kt</url>
-          <line>64</line>
+          <line>51</line>
           <properties />
-          <option name="timeStamp" value="21" />
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="22" />
+      <option name="time" value="28" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -321,10 +321,10 @@
           <caret line="24" column="35" lean-forward="true" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
           <folding>
             <element signature="e#721#899#0" />
-            <element signature="n#!!block;n#variablesList#1;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#operator#0;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#subexpression#0;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#assignment#1;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#declareVariables#0;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#declareVariables#1;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#operatorsList#0;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#assigment#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#getNextLexem#0;n#!!block;n#SyntaxAnalyzer#0" />
           </folding>
         </state>
@@ -363,7 +363,6 @@
         <state relative-caret-position="51">
           <caret line="3" column="25" lean-forward="true" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
           <folding>
-            <element signature="n#!!block;n#LexemType#0" />
             <element signature="n#!!block;n#GrammarSymbolsTypes#0" />
           </folding>
         </state>
@@ -389,10 +388,10 @@
           <caret line="20" selection-start-line="20" selection-end-line="20" />
           <folding>
             <element signature="e#721#899#0" />
-            <element signature="n#!!block;n#variablesList#1;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#operator#0;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#subexpression#0;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#assignment#1;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#declareVariables#0;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#declareVariables#1;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#operatorsList#0;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#assigment#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#getNextLexem#0;n#!!block;n#SyntaxAnalyzer#0" />
           </folding>
         </state>
@@ -418,10 +417,10 @@
           <caret line="24" column="35" lean-forward="true" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
           <folding>
             <element signature="e#721#899#0" />
-            <element signature="n#!!block;n#variablesList#1;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#operator#0;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#subexpression#0;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#assignment#1;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#declareVariables#0;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#declareVariables#1;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#operatorsList#0;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#assigment#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#getNextLexem#0;n#!!block;n#SyntaxAnalyzer#0" />
           </folding>
         </state>
@@ -448,24 +447,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/types.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
-          <folding>
-            <element signature="n#!!block;n#LexemType#0" />
-            <element signature="n#!!block;n#GrammarSymbolsTypes#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ASTNode.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -480,16 +461,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/types.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="11" lean-forward="true" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
+          <folding>
+            <element signature="n#!!block;n#GrammarSymbolsTypes#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ASTNode.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/SyntaxAnaliser.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="75" column="30" lean-forward="true" selection-start-line="75" selection-start-column="30" selection-end-line="75" selection-end-column="30" />
+        <state relative-caret-position="403">
+          <caret line="190" column="9" selection-start-line="190" selection-start-column="9" selection-end-line="190" selection-end-column="9" />
           <folding>
             <element signature="e#721#899#0" />
-            <element signature="n#!!block;n#variablesList#1;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#operator#0;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#subexpression#0;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#assignment#1;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#declareVariables#0;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#declareVariables#1;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#operatorsList#0;n#!!block;n#SyntaxAnalyzer#0" />
+            <element signature="n#!!block;n#assigment#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#getNextLexem#0;n#!!block;n#SyntaxAnalyzer#0" />
           </folding>
         </state>
