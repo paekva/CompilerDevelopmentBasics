@@ -1,0 +1,66 @@
+
+enum class LexemType(val code: Int){
+    RELATION_OPERATOR(0),
+    BIN_MATH_OPERATOR(1),
+    UNI_MATH_OPERATOR(2),
+    DECLARE(3),
+    IDENTIFIER(4),
+    CONST(5),
+    BEGIN(6),
+    END(7),
+    VAR(8),
+    IF(9),
+    THEN(10),
+    ELSE(11),
+    LBRACE(12),
+    RBRACE(13),
+    COMMA(14),
+    LINEBREAK(15),
+    UNRECOGNISED(16)
+}
+
+enum class GrammarSymbols(val sign: String, val type: GrammarSymbolsTypes, val index: Int){
+    S("<Программа>", GrammarSymbolsTypes.NONTERMINAL, 0),
+    A("<Объявление переменных>", GrammarSymbolsTypes.NONTERMINAL, 2),
+    B("<Описание вычислений>", GrammarSymbolsTypes.NONTERMINAL, 1),
+    C("<Список операторов>", GrammarSymbolsTypes.NONTERMINAL, 4),
+    D("<Список переменных>", GrammarSymbolsTypes.NONTERMINAL, 3),
+    E("<Идент>", GrammarSymbolsTypes.NONTERMINAL, 14),
+    F("<Оператор>", GrammarSymbolsTypes.NONTERMINAL, 5),
+    G("<Присваивание>", GrammarSymbolsTypes.NONTERMINAL, 6),
+    H("<Сложный оператор>", GrammarSymbolsTypes.NONTERMINAL,12),
+    I("<Выражение>", GrammarSymbolsTypes.NONTERMINAL, 7),
+    J("<Подвыражение>", GrammarSymbolsTypes.NONTERMINAL, 8),
+    K("<Ун.оп.>", GrammarSymbolsTypes.NONTERMINAL, 9),
+    L("<Операнд>", GrammarSymbolsTypes.NONTERMINAL, 11),
+    M("<Бин.оп.>", GrammarSymbolsTypes.NONTERMINAL, 10),
+    N("<Const>", GrammarSymbolsTypes.NONTERMINAL, 15),
+    O("<Составной оператор>", GrammarSymbolsTypes.NONTERMINAL, 13),
+    a("Begin", GrammarSymbolsTypes.TERMINAL, 0),
+    b("End", GrammarSymbolsTypes.TERMINAL, 2),
+    c("Var", GrammarSymbolsTypes.TERMINAL, 3),
+    d(",", GrammarSymbolsTypes.TERMINAL,4),
+    e(":=", GrammarSymbolsTypes.TERMINAL,5),
+    f("(", GrammarSymbolsTypes.TERMINAL,6),
+    g(")", GrammarSymbolsTypes.TERMINAL,7),
+    h("-", GrammarSymbolsTypes.TERMINAL,8),
+    i("+", GrammarSymbolsTypes.TERMINAL,9),
+    j("*", GrammarSymbolsTypes.TERMINAL,10),
+    k("/", GrammarSymbolsTypes.TERMINAL,11),
+    l(">>", GrammarSymbolsTypes.TERMINAL,12),
+    m("<<", GrammarSymbolsTypes.TERMINAL,13),
+    n(">", GrammarSymbolsTypes.TERMINAL,14),
+    o("<", GrammarSymbolsTypes.TERMINAL,15),
+    p("=", GrammarSymbolsTypes.TERMINAL,16),
+    q("IF", GrammarSymbolsTypes.TERMINAL,17),
+    r("THEN", GrammarSymbolsTypes.TERMINAL,18),
+    s("ELSE", GrammarSymbolsTypes.TERMINAL,19),
+    t("<Буква>", GrammarSymbolsTypes.TERMINAL,20),
+    u("<Цифра>", GrammarSymbolsTypes.TERMINAL,21),
+}
+
+enum class GrammarSymbolsTypes{
+    TERMINAL,
+    NONTERMINAL
+}
+class Lexem(val type: LexemType, val sign: String)

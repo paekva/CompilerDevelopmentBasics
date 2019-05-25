@@ -13,7 +13,7 @@ class LexemStreamReader(private val filePath: String = "E:/lexemTable.txt") {
             = File(filePath).readLines(Charsets.UTF_8)
 
     private fun getLexemByString(lexem: String): Lexem{
-        val regex = "<(\\d),(\\S+)>".toRegex()
+        val regex = "<(\\d+),(\\S+)>".toRegex()
         val matchResult = regex.find(lexem)
         val (type, sign) = matchResult!!.destructured
 

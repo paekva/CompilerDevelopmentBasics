@@ -33,15 +33,3 @@ class ASTNode(private val type: LexemType, private val textSign: String) {
         return children
     }
 }
-
-enum class LexemType(val code: Int){
-    RELATION_OPERATOR(0),
-    BIN_MATH_OPERATOR(1),
-    UNI_MATH_OPERATOR(2),
-    WORD(3),
-    IDENTIFIER(4),
-    CONST(5),
-    UNRECOGNISED(6);
-}
-
-class Lexem(val type: LexemType, val sign: String)
