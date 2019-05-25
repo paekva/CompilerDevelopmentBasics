@@ -9,13 +9,15 @@ class CompoundOperator(private val getCurrentLexeme: currentLexeme, private val 
 
     // <Составной оператор>::= Begin < Список операторов > End
     fun analyze(): ASTNode?{
-        val beginNode = begin()
+        val keyWordsService = KeyWords(getCurrentLexeme, moveToTheNextLexeme)
+
+        val beginNode = keyWordsService.begin()
         moveToTheNextLexeme()
 
         val operatorsListNode = operatorsList()
         moveToTheNextLexeme()
 
-        val endNode = end()
+        val endNode = keyWordsService.end()
         moveToTheNextLexeme()
 
         val parent = constructTree(GrammarSymbols.ASSIGNMENT, arrayListOf(beginNode, operatorsListNode, endNode))
@@ -25,26 +27,9 @@ class CompoundOperator(private val getCurrentLexeme: currentLexeme, private val 
         return parent
     }
 
-    // Begin
-    private fun begin(): ASTNode?{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.BEGIN) {
-            return ASTNode(GrammarSymbols.BEGIN, lexeme)
-        }
-        return null
-    }
-
     // < Список операторов >
     private fun operatorsList(): ASTNode?{
         return OperatorsList(getCurrentLexeme, moveToTheNextLexeme).analyze()
     }
 
-    // End
-    private fun end(): ASTNode?{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.END) {
-            return ASTNode(GrammarSymbols.END, lexeme)
-        }
-        return null
-    }
 }

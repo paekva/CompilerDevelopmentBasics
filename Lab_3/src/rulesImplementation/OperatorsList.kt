@@ -37,9 +37,6 @@ class OperatorsList(private val getCurrentLexeme: currentLexeme, private val mov
 
     // , <Список операторов>
     private fun commaWithOperators(): List<ASTNode?> {
-        if(!comma())
-            return emptyList()
-
         val operatorsListNode = analyze()
         if(operatorsListNode == null)
             return emptyList()
@@ -56,12 +53,4 @@ class OperatorsList(private val getCurrentLexeme: currentLexeme, private val mov
         return false
     }
 
-    private fun comma(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.COMMA){
-            moveToTheNextLexeme()
-            return true
-        }
-        return false
-    }
 }

@@ -21,7 +21,7 @@ class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val 
     }
 
     // <Составной оператор>
-    private fun compoundOperator(){
+    private fun compoundOperator(): ASTNode? {
         return CompoundOperator(getCurrentLexeme, moveToTheNextLexeme).analyze()
     }
 }

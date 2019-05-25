@@ -27,7 +27,7 @@ class Assignment(private val getCurrentLexeme: currentLexeme, private val moveTo
 
     // <Идент>
     private fun identifier(): ASTNode?{
-        return Operand(getCurrentLexeme).identifier()
+        return Operand(getCurrentLexeme, moveToTheNextLexeme).identifier()
     }
 
     // :=

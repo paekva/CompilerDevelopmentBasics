@@ -1,4 +1,6 @@
+import rulesImplementation.KeyWords
 import rulesImplementation.OperatorsList
+import rulesImplementation.VariablesList
 import kotlin.collections.ArrayList
 
 class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
@@ -26,78 +28,36 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
 
     // <Объявление переменных> ::= Var <Список переменных>
     private fun declareVariables() : ASTNode? {
-        val children: ArrayList<ASTNode?> = arrayListOf()
+        val variableNode = KeyWords(::getCurrentLexeme, ::moveToTheNextLexeme).variable()
+        val variablesListNode = variablesList()
 
-        if(currentLexeme.type == LexemType.VAR){
-            val varNode = addNewNodeToAST(GrammarSymbols.VAR, currentLexeme)
-            children.add(varNode)
-            getNextLexeme()
+        lineBreak()
 
-            val variablesListNode = variablesList()
-            children.add(variablesListNode)
-        }
-
-        val parent = constructTree(GrammarSymbols.DECLARE_VARIABLES, children)
+        val parent = constructTree(GrammarSymbols.DECLARE_VARIABLES, arrayListOf(variableNode, variablesListNode))
         if(parent == null)
             printErrMsg("declareVariables")
-
-        skipLineBreak()
-
         return parent
     }
 
     // <Описание вычислений> ::= Begin < Список операторов > End
     private fun declareCalculations() : ASTNode? {
-        val children: ArrayList<ASTNode?> = arrayListOf()
-        if(currentLexeme.type == LexemType.BEGIN){
-            val beginNode = addNewNodeToAST(GrammarSymbols.BEGIN, currentLexeme)
-            children.add(beginNode)
-            getNextLexeme()
-            skipLineBreak()
+        val keyWordsService = KeyWords(::getCurrentLexeme, ::moveToTheNextLexeme)
 
-            val operatorsListNode = operatorsList()
-            children.add(operatorsListNode)
-            getNextLexeme()
+        val beginNode = keyWordsService.begin()
+        val operatorsListNode = operatorsList()
+        val endNode = keyWordsService.end()
 
-            if(currentLexeme.type == LexemType.END){
-                val endNode = addNewNodeToAST(GrammarSymbols.END, currentLexeme)
-                children.add(endNode)
-                getNextLexeme()
-                skipLineBreak()
-            }
-        }
+        lineBreak()
 
-        val parent = constructTree(GrammarSymbols.DECLARE_CALCULATIONS, children)
+        val parent = constructTree(GrammarSymbols.DECLARE_VARIABLES, arrayListOf(beginNode, operatorsListNode, endNode))
         if(parent == null)
             printErrMsg("declareCalculations")
-
         return parent
     }
 
     // <Список переменных> ::= <Идент> | <Идент> , <Список переменных>
     private fun variablesList(): ASTNode?{
-        val children: ArrayList<ASTNode?> = arrayListOf()
-        if(currentLexeme.type == LexemType.IDENTIFIER){
-            val identifierNode = addNewNodeToAST(GrammarSymbols.IDENTIFIER, currentLexeme)
-            children.add(identifierNode)
-            getNextLexeme()
-
-            skipLineBreak()
-
-            if(currentLexeme.type == LexemType.COMMA){
-                val commaNode = addNewNodeToAST(GrammarSymbols.COMMA, currentLexeme)
-                children.add(commaNode)
-
-                getNextLexeme()
-                val variablesListNode = variablesList()
-                children.add(variablesListNode)
-            }
-        }
-
-        val parent = constructTree(GrammarSymbols.VARIABLES_LIST, children)
-        if(parent == null)
-            printErrMsg("variablesList")
-        return parent
+        return VariablesList(::getCurrentLexeme, ::moveToTheNextLexeme).analyze()
     }
 
     //<Список операторов> ::= <Оператор> | <Оператор> <Список операторов>
@@ -110,9 +70,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
         currentLexemeIndex++
     }
 
-    private fun addNewNodeToAST(gs: GrammarSymbols, lexem: Lexem) : ASTNode? = ASTNode(gs, lexem)
-
-    private fun skipLineBreak(): Boolean{
+    private fun lineBreak(): Boolean{
         if(currentLexeme.type == LexemType.LINEBREAK){
             getNextLexeme()
             return true

@@ -2,13 +2,11 @@ package rulesImplementation
 
 import currentLexeme
 import ASTNode
-import Lexem
 
-class Operand(private val getCurrentLexeme: currentLexeme) {
+class Operand(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
 
     // <Операнд> ::= <Идент> | <Const>
     fun analyze(): ASTNode?{
-        val lexeme = getCurrentLexeme.invoke()
         var node = identifier()
 
         if(node==null)
@@ -21,6 +19,7 @@ class Operand(private val getCurrentLexeme: currentLexeme) {
     fun identifier(): ASTNode?{
         val lexeme = getCurrentLexeme.invoke()
         if(lexeme.type == LexemType.IDENTIFIER) {
+            moveToTheNextLexeme.invoke()
             return ASTNode(GrammarSymbols.IDENTIFIER, lexeme)
         }
         return null
@@ -30,6 +29,7 @@ class Operand(private val getCurrentLexeme: currentLexeme) {
     fun const(): ASTNode?{
         val lexeme = getCurrentLexeme.invoke()
         if(lexeme.type == LexemType.CONST) {
+            moveToTheNextLexeme.invoke()
             return ASTNode(GrammarSymbols.CONST, lexeme)
         }
         return null

@@ -51,7 +51,7 @@ class SubExpression(private val getCurrentLexeme: currentLexeme, private val mov
 
     // <Операнд>
     private fun operand(): ArrayList<ASTNode?>{
-        return arrayListOf( Operand(getCurrentLexeme).analyze() )
+        return arrayListOf( Operand(getCurrentLexeme, moveToTheNextLexeme).analyze() )
     }
 
     // <Подвыражение > <Бин.оп.> <Подвыражение>
