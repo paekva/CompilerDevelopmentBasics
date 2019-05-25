@@ -4,6 +4,7 @@ import currentLexeme
 import ASTNode
 import constructTree
 import printErrMsg
+import Lexem
 
 class Expression (private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
 
@@ -24,12 +25,22 @@ class Expression (private val getCurrentLexeme: currentLexeme, private val moveT
         val lexeme = getCurrentLexeme.invoke()
         val children: ArrayList<ASTNode?> = arrayListOf()
 
-        if(lexeme.type == LexemType.UNI_MATH_OPERATOR){
-            val unaryOperatorNode = ASTNode(GrammarSymbols.UNARY_OPERATOR, lexeme)
+        val unaryOperatorNode = unaryOperator(lexeme)
+        if(unaryOperatorNode!=null){
             children.add(unaryOperatorNode)
             moveToTheNextLexeme.invoke()
         }
 
+        val subExpressionNode = SubExpression(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        children.add(subExpressionNode)
+
         return children
+    }
+
+    private fun unaryOperator(lexeme: Lexem): ASTNode? {
+        if(lexeme.type == LexemType.UNI_MATH_OPERATOR) {
+            return ASTNode(GrammarSymbols.UNARY_OPERATOR, lexeme)
+        }
+        return null
     }
 }

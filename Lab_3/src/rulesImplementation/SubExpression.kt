@@ -4,6 +4,7 @@ import currentLexeme
 import ASTNode
 import constructTree
 import printErrMsg
+import Lexem
 
 class SubExpression(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
 
@@ -50,11 +51,32 @@ class SubExpression(private val getCurrentLexeme: currentLexeme, private val mov
 
     // <Операнд>
     private fun operand(): ArrayList<ASTNode?>{
-        return arrayListOf()
+        return arrayListOf( Operand(getCurrentLexeme).analyze() )
     }
 
     // <Подвыражение > <Бин.оп.> <Подвыражение>
     private fun subExpressionsWithBinaryOperator(): ArrayList<ASTNode?>{
-        return arrayListOf()
+        val children: ArrayList<ASTNode?> = arrayListOf()
+        val subExpressionNodeOne = analyze()
+        children.add(subExpressionNodeOne)
+
+        moveToTheNextLexeme.invoke()
+        val lexeme = getCurrentLexeme.invoke()
+        val binaryOperator = binaryOperator(lexeme)
+        children.add(binaryOperator)
+
+        moveToTheNextLexeme.invoke()
+        val subExpressionNodeTwo = analyze()
+        children.add(subExpressionNodeTwo)
+
+        return children
+    }
+
+    // <Бин.оп.> ::= "-" | "+" | "*" | "/" | ">>" | "<<" | ">" | "<" | "="
+    private fun binaryOperator(lexeme: Lexem): ASTNode? {
+        if(lexeme.type == LexemType.BIN_MATH_OPERATOR) {
+            return ASTNode(GrammarSymbols.BINARY_OPERATOR, lexeme)
+        }
+        return null
     }
 }

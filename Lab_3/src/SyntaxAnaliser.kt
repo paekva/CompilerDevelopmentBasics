@@ -7,7 +7,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
     private var currentLexemIndex: Int = 0
     private fun getCurrentLexeme() = currentLexem
     private fun moveToTheNextLexeme(): Lexem {
-        getNextLexem()
+        getNextLexeme()
         return currentLexem
     }
 
@@ -24,12 +24,6 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
         return parent
     }
 
-    /*
-<Ун.оп.> ::= "-"
-<Бин.оп.> ::= "-" | "+" | "*" | "/" | ">>" | "<<" | ">" | "<" | "="
-<Операнд> ::= <Идент> | <Const>
-<Составной оператор>::= Begin < Список операторов > End*/
-
     // <Объявление переменных> ::= Var <Список переменных>
     private fun declareVariables() : ASTNode? {
         val children: ArrayList<ASTNode?> = arrayListOf()
@@ -37,7 +31,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
         if(currentLexem.type == LexemType.VAR){
             val varNode = addNewNodeToAST(GrammarSymbols.VAR, currentLexem)
             children.add(varNode)
-            getNextLexem()
+            getNextLexeme()
 
             val variablesListNode = variablesList()
             children.add(variablesListNode)
@@ -58,17 +52,17 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
         if(currentLexem.type == LexemType.BEGIN){
             val beginNode = addNewNodeToAST(GrammarSymbols.BEGIN, currentLexem)
             children.add(beginNode)
-            getNextLexem()
+            getNextLexeme()
             skipLineBreak()
 
             val operatorsListNode = operatorsList()
             children.add(operatorsListNode)
-            getNextLexem()
+            getNextLexeme()
 
             if(currentLexem.type == LexemType.END){
                 val endNode = addNewNodeToAST(GrammarSymbols.END, currentLexem)
                 children.add(endNode)
-                getNextLexem()
+                getNextLexeme()
                 skipLineBreak()
             }
         }
@@ -86,7 +80,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
         if(currentLexem.type == LexemType.IDENTIFIER){
             val identifierNode = addNewNodeToAST(GrammarSymbols.IDENTIFIER, currentLexem)
             children.add(identifierNode)
-            getNextLexem()
+            getNextLexeme()
 
             skipLineBreak()
 
@@ -94,7 +88,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
                 val commaNode = addNewNodeToAST(GrammarSymbols.COMMA, currentLexem)
                 children.add(commaNode)
 
-                getNextLexem()
+                getNextLexeme()
                 val variablesListNode = variablesList()
                 children.add(variablesListNode)
             }
@@ -112,7 +106,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
 
         val operatorNode = operator()
         children.add(operatorNode)
-        getNextLexem()
+        getNextLexeme()
 
         skipLineBreak()
         val operatorsListNode = operatorsList()
@@ -141,12 +135,12 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
         if(currentLexem.type == LexemType.IDENTIFIER){
             val identifierNode = addNewNodeToAST(GrammarSymbols.IDENTIFIER, currentLexem)
             children.add(identifierNode)
-            getNextLexem()
+            getNextLexeme()
 
             if(currentLexem.type == LexemType.DECLARE){
                 val assignmentSignNode = addNewNodeToAST(GrammarSymbols.ASSIGNMENT_SIGN, currentLexem)
                 children.add(assignmentSignNode)
-                getNextLexem()
+                getNextLexeme()
 
                 val expressionNode = expression()
                 children.add(expressionNode)
@@ -169,7 +163,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
         return null
     }
 
-    private fun getNextLexem(){
+    private fun getNextLexeme(){
         currentLexem = lexemList[currentLexemIndex+1]
         currentLexemIndex++
     }
@@ -178,9 +172,14 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
 
     private fun skipLineBreak(): Boolean{
         if(currentLexem.type == LexemType.LINEBREAK){
-            getNextLexem()
+            getNextLexeme()
             return true
         }
         return false
+    }
+    
+    // <Составной оператор>::= Begin < Список операторов > End
+    private fun compoundOperator(){
+        
     }
 }
