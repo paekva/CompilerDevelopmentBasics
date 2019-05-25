@@ -1,4 +1,4 @@
-class ASTNode(private val type: LexemType, private val textSign: String) {
+class ASTNode(private val type: GrammarSymbols, private val lexem: Lexem?) {
 
     private var parent: ASTNode? = null
     private val children: ArrayList<ASTNode> = arrayListOf<ASTNode>()

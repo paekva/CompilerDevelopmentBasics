@@ -1,23 +1,27 @@
-import java.util.*
 import kotlin.collections.ArrayList
 
-typealias GrammarRule = ArrayList<GrammarSymbols>
-typealias TableRow = Array<GrammarRule>
 class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
 
     private var currentLexem: Lexem = lexemList[0]
     private var currentLexemIndex: Int = 0
-    private var stack: Stack<GrammarSymbols> = Stack()
     private fun lookAheadType(): LexemType = if(currentLexemIndex < lexemList.size) lexemList[currentLexemIndex+1].type else LexemType.LINEBREAK
+    private fun printErrMsg(ruleName: String) = println("problem constructing tree: $ruleName")
 
-    init{
-        stack.push(GrammarSymbols.S)
-    }
+    fun beginAnalise(): ASTNode? = program()
 
     // <Программа> ::= <Объявление переменных> <Описание вычислений>
-    fun beginAnalise(){
-        declareVariables()
-        declareCalculations()
+    private fun program(): ASTNode? {
+        var parent: ASTNode? = null
+        val declareVariablesNode = declareVariables()
+        val declareCalculationsNode = declareCalculations()
+
+        if(declareVariablesNode != null && declareCalculationsNode!=null)
+            parent = constructTree(GrammarSymbols.PROGRAM, arrayListOf(declareVariablesNode, declareCalculationsNode))
+
+        if(parent == null)
+            printErrMsg("program")
+
+        return parent
     }
 
     /*
@@ -27,43 +31,60 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
 <Составной оператор>::= Begin < Список операторов > End*/
 
     // <Объявление переменных> ::= Var <Список переменных>
-    private fun declareVariables(){
+    private fun declareVariables() : ASTNode? {
+        var parent: ASTNode? = null
         if(currentLexem.type == LexemType.VAR){
-            addNewNodeToAST(currentLexem)
+            val varNode = addNewNodeToAST(GrammarSymbols.VAR, currentLexem)
             getNextLexem()
-            variablesList()
+            val variablesListNode = variablesList()
+
+            if(varNode!=null && variablesListNode!=null)
+                parent = constructTree(GrammarSymbols.DECLARE_VARIABLES, arrayListOf(varNode, variablesListNode))
         }
+
+        if(parent == null)
+            printErrMsg("declareVariables")
+        return parent
     }
 
     // <Описание вычислений> ::= Begin < Список операторов > End
-    private fun declareCalculations(){
+    private fun declareCalculations() : ASTNode? {
         if(currentLexem.type == LexemType.BEGIN){
-            addNewNodeToAST(currentLexem)
+            addNewNodeToAST(GrammarSymbols.BEGIN, currentLexem)
             operatorsList()
             if(currentLexem.type == LexemType.END){
-                addNewNodeToAST(currentLexem)
+                addNewNodeToAST(GrammarSymbols.END, currentLexem)
             }
         }
+        return null
     }
 
     // <Список переменных> ::= <Идент> | <Идент> , <Список переменных>
-    private fun variablesList(){
+    private fun variablesList(): ASTNode?{
+        var parent: ASTNode? = null
         if(currentLexem.type == LexemType.IDENTIFIER){
-            addNewNodeToAST(currentLexem)
+            val identifierNode = addNewNodeToAST(GrammarSymbols.IDENTIFIER, currentLexem)
 
-            if(lookAheadType() == LexemType.LINEBREAK){
-                getNextLexem()
+            getNextLexem()
+            if(currentLexem.type == LexemType.LINEBREAK && identifierNode != null){
+                parent = constructTree(GrammarSymbols.VARIABLES_LIST, arrayListOf(identifierNode))
                 getNextLexem()
             }
-            else {
-                if(lookAheadType() == LexemType.COMMA){
-                    addNewNodeToAST(currentLexem)
+            else if(currentLexem.type == LexemType.COMMA){
+                val commaNode = addNewNodeToAST(GrammarSymbols.COMMA, currentLexem)
 
-                    getNextLexem()
-                    variablesList()
+                getNextLexem()
+                val variablesListNode = variablesList()
+
+                if(identifierNode != null && commaNode!=null && variablesListNode!=null){
+                    parent = constructTree(GrammarSymbols.VARIABLES_LIST, arrayListOf(identifierNode, commaNode, variablesListNode))
                 }
             }
         }
+
+        if(parent == null)
+            printErrMsg("variablesList")
+        return parent
     }
 
     //<Список операторов> ::= <Оператор> | <Оператор> <Список операторов>
@@ -88,10 +109,10 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
     // <Присваивание> ::= <Идент> := <Выражение>
     private fun assignment(){
         if(currentLexem.type == LexemType.IDENTIFIER){
-            addNewNodeToAST(currentLexem)
+            addNewNodeToAST(GrammarSymbols.IDENTIFIER, currentLexem)
             getNextLexem()
             if(currentLexem.type == LexemType.DECLARE){
-                addNewNodeToAST(currentLexem)
+                addNewNodeToAST(GrammarSymbols.ASSIGNMENT_SIGN, currentLexem)
                 getNextLexem()
                 expression()
             }
@@ -101,7 +122,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
     // <Выражение> ::= <Ун.оп.> <Подвыражение> | <Подвыражение>
     private fun expression(){
         if(currentLexem.type == LexemType.UNI_MATH_OPERATOR){
-            addNewNodeToAST(currentLexem)
+            addNewNodeToAST(GrammarSymbols.UNARY_OPERATOR, currentLexem)
             getNextLexem()
             subExpression()
         }
@@ -128,7 +149,14 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
         currentLexemIndex++
     }
 
-    private fun addNewNodeToAST(lexem: Lexem){
-        println("${lexem.sign}")
+    private fun addNewNodeToAST(gs: GrammarSymbols, lexem: Lexem) : ASTNode? = ASTNode(gs, lexem)
+
+    private fun constructTree(parentType: GrammarSymbols, children: ArrayList<ASTNode>): ASTNode? {
+        val parent = ASTNode(parentType, null)
+        children.forEach { child ->
+            parent.addChild(child)
+            child.setParent(parent)
+        }
+        return parent
     }
 }
