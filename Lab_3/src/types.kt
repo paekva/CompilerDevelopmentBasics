@@ -1,4 +1,21 @@
 
+typealias currentLexeme = () -> Lexem
+fun printErrMsg(ruleName: String) = println("problem constructing tree: $ruleName")
+
+fun constructTree(parentType: GrammarSymbols, children: ArrayList<ASTNode?>): ASTNode? {
+    if(children.isEmpty())
+        return null
+
+    val parent = ASTNode(parentType, null)
+
+    children.forEach { child ->
+        if(child == null ) return null
+        parent.addChild(child)
+        child.setParent(parent)
+    }
+    return parent
+}
+
 enum class LexemType(val code: Int){
     RELATION_OPERATOR(0),
     BIN_MATH_OPERATOR(1),

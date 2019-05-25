@@ -24,8 +24,8 @@
       <file leaf-file-name="types.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/types.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="11" lean-forward="true" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
+            <state relative-caret-position="221">
+              <caret line="13" column="31" lean-forward="true" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
               <folding>
                 <element signature="n#!!block;n#GrammarSymbolsTypes#0" />
               </folding>
@@ -45,16 +45,34 @@
       <file leaf-file-name="SyntaxAnaliser.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/SyntaxAnaliser.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="190" column="9" selection-start-line="190" selection-start-column="9" selection-end-line="190" selection-end-column="9" />
+            <state relative-caret-position="423">
+              <caret line="78" selection-start-line="78" selection-end-line="78" />
               <folding>
+                <element signature="e#0#114#0" expanded="true" />
                 <element signature="e#721#899#0" />
                 <element signature="n#!!block;n#declareVariables#0;n#!!block;n#SyntaxAnalyzer#0" />
                 <element signature="n#!!block;n#declareVariables#1;n#!!block;n#SyntaxAnalyzer#0" />
-                <element signature="n#!!block;n#operatorsList#0;n#!!block;n#SyntaxAnalyzer#0" />
                 <element signature="n#!!block;n#assigment#0;n#!!block;n#SyntaxAnalyzer#0" />
                 <element signature="n#!!block;n#getNextLexem#0;n#!!block;n#SyntaxAnalyzer#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SubExpression.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rulesImplementation/SubExpression.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="14" column="32" lean-forward="true" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Expression.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/rulesImplementation/Expression.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
             </state>
           </provider>
         </entry>
@@ -83,8 +101,10 @@
       <list>
         <option value="$PROJECT_DIR$/src/LexemStreamReader.kt" />
         <option value="$PROJECT_DIR$/src/Main.kt" />
-        <option value="$PROJECT_DIR$/src/types.kt" />
         <option value="$PROJECT_DIR$/src/ASTNode.kt" />
+        <option value="$PROJECT_DIR$/src/types.kt" />
+        <option value="$PROJECT_DIR$/src/rulesImplementation/SubExpression.kt" />
+        <option value="$PROJECT_DIR$/src/rulesImplementation/Expression.kt" />
         <option value="$PROJECT_DIR$/src/SyntaxAnaliser.kt" />
       </list>
     </option>
@@ -120,6 +140,12 @@
               <item name="Lab_3" type="b2602c69:ProjectViewProjectNode" />
               <item name="Lab_3" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Lab_3" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Lab_3" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="rulesImplementation" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -225,7 +251,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27050000" />
+    <option name="totallyTimeSpent" value="29164000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -240,15 +266,15 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32838285" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.11881188" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.12706271" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.11551155" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3349835" />
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
@@ -286,18 +312,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/SyntaxAnaliser.kt</url>
-          <line>53</line>
+          <line>112</line>
           <properties />
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/SyntaxAnaliser.kt</url>
-          <line>51</line>
-          <properties />
-          <option name="timeStamp" value="26" />
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="28" />
+      <option name="time" value="30" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -320,10 +340,10 @@
         <state relative-caret-position="408">
           <caret line="24" column="35" lean-forward="true" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
           <folding>
+            <element signature="e#0#114#0" expanded="true" />
             <element signature="e#721#899#0" />
             <element signature="n#!!block;n#declareVariables#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#declareVariables#1;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#operatorsList#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#assigment#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#getNextLexem#0;n#!!block;n#SyntaxAnalyzer#0" />
           </folding>
@@ -387,10 +407,10 @@
         <state relative-caret-position="79">
           <caret line="20" selection-start-line="20" selection-end-line="20" />
           <folding>
+            <element signature="e#0#114#0" expanded="true" />
             <element signature="e#721#899#0" />
             <element signature="n#!!block;n#declareVariables#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#declareVariables#1;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#operatorsList#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#assigment#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#getNextLexem#0;n#!!block;n#SyntaxAnalyzer#0" />
           </folding>
@@ -416,10 +436,10 @@
         <state relative-caret-position="408">
           <caret line="24" column="35" lean-forward="true" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
           <folding>
+            <element signature="e#0#114#0" expanded="true" />
             <element signature="e#721#899#0" />
             <element signature="n#!!block;n#declareVariables#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#declareVariables#1;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#operatorsList#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#assigment#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#getNextLexem#0;n#!!block;n#SyntaxAnalyzer#0" />
           </folding>
@@ -447,27 +467,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/LexemStreamReader.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="22" column="31" lean-forward="true" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/types.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="11" lean-forward="true" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-          <folding>
-            <element signature="n#!!block;n#GrammarSymbolsTypes#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -478,15 +481,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/types.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="31" lean-forward="true" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+          <folding>
+            <element signature="n#!!block;n#GrammarSymbolsTypes#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rulesImplementation/Expression.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/rulesImplementation/SubExpression.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="14" column="32" lean-forward="true" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/SyntaxAnaliser.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="190" column="9" selection-start-line="190" selection-start-column="9" selection-end-line="190" selection-end-column="9" />
+        <state relative-caret-position="423">
+          <caret line="78" selection-start-line="78" selection-end-line="78" />
           <folding>
+            <element signature="e#0#114#0" expanded="true" />
             <element signature="e#721#899#0" />
             <element signature="n#!!block;n#declareVariables#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#declareVariables#1;n#!!block;n#SyntaxAnalyzer#0" />
-            <element signature="n#!!block;n#operatorsList#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#assigment#0;n#!!block;n#SyntaxAnalyzer#0" />
             <element signature="n#!!block;n#getNextLexem#0;n#!!block;n#SyntaxAnalyzer#0" />
           </folding>
