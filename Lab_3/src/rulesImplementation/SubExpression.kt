@@ -68,7 +68,7 @@ class SubExpression{
 
     // <Вспомогательное выражение> :: = <Бин.оп.><Подвыражение><Вспомогательное выражение> | Ɛ
     private fun helpfulExpression(): ArrayList<ASTNode?>{
-        if(lineBreak())
+        if(SyntaxAnalyzer.removeLineBreak())
             return arrayListOf()
 
         return subExpressionsWithBinaryOperator()
@@ -101,14 +101,5 @@ class SubExpression{
     // <Бин.оп.>
     private fun binaryOperator(): ASTNode? {
         return OperatorSign().binaryOperator()
-    }
-
-    private fun lineBreak(): Boolean{
-        val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.LINEBREAK) {
-            ErrorLog.nextLine()
-            return true
-        }
-        return false
     }
 }

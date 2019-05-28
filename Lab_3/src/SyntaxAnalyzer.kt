@@ -5,11 +5,11 @@ import kotlin.collections.ArrayList
 
 class SyntaxAnalyzer{
     companion object {
-        private var lexemeList: ArrayList<Lexem> = arrayListOf()
-        private var currentLexeme: Lexem = Lexem(LexemType.UNRECOGNISED, "")
+        private var lexemeList: ArrayList<Lexeme> = arrayListOf()
+        private var currentLexeme: Lexeme = Lexeme(LexemeType.UNRECOGNISED, "")
         private var currentLexemeIndex: Int = 0
 
-        fun setLexemeList(lexemes: ArrayList<Lexem>) {
+        fun setLexemeList(lexemes: ArrayList<Lexeme>) {
             if (lexemeList.isEmpty()) {
                 lexemeList = lexemes
                 currentLexeme = lexemeList[0]
@@ -17,16 +17,25 @@ class SyntaxAnalyzer{
         }
 
         fun beginAnalise(): ASTNode? = program()
-        fun getCurrentLexeme():Lexem = currentLexeme
-        fun moveToTheNextLexeme(): Lexem {
+        fun getCurrentLexeme():Lexeme = currentLexeme
+        fun moveToTheNextLexeme(): Lexeme {
             getNextLexeme()
             return currentLexeme
         }
-        fun skipCurrentLine(): Lexem {
-            while (currentLexeme.type != LexemType.LINEBREAK) getNextLexeme()
+        fun skipCurrentLine(): Lexeme {
+            while (currentLexeme.type != LexemeType.LINEBREAK) getNextLexeme()
             getNextLexeme()
 
             return currentLexeme
+        }
+        fun removeLineBreak(): Boolean{
+            val lexeme = getCurrentLexeme()
+            if(lexeme.type == LexemeType.LINEBREAK) {
+                ErrorLog.nextLine()
+                moveToTheNextLexeme()
+                return true
+            }
+            return false
         }
 
         // <Программа> ::= <Объявление переменных> <Описание вычислений>
@@ -50,7 +59,7 @@ class SyntaxAnalyzer{
             val variablesListNode = variablesList()
             variablesListNode ?: return null
 
-            lineBreak()
+            removeLineBreak()
             return constructTree(GrammarSymbols.DECLARE_VARIABLES, arrayListOf(variableNode, variablesListNode))
         }
 
@@ -92,15 +101,5 @@ class SyntaxAnalyzer{
                 currentLexemeIndex++
             }
         }
-
-        private fun lineBreak(): Boolean {
-            if (currentLexeme.type == LexemType.LINEBREAK) {
-                ErrorLog.nextLine()
-                getNextLexeme()
-                return true
-            }
-            return false
-        }
-
     }
 }

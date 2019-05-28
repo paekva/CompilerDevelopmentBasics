@@ -8,7 +8,7 @@ class OperatorSign(){
     // "-" | "+" | "*" | "/" | ">>" | "<<" | ">" | "<" | "="
     fun binaryOperator(): ASTNode? {
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.BIN_MATH_OPERATOR || lexeme.type == LexemType.RELATION_OPERATOR) {
+        if(lexeme.type == LexemeType.BIN_MATH_OPERATOR || lexeme.type == LexemeType.RELATION_OPERATOR) {
             SyntaxAnalyzer.moveToTheNextLexeme()
 
             val operatorType: GrammarSymbols = findOperatorType(lexeme.sign)
@@ -24,7 +24,7 @@ class OperatorSign(){
     // "-"
     fun unaryOperator(): ASTNode? {
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.UNI_MATH_OPERATOR) {
+        if(lexeme.type == LexemeType.UNI_MATH_OPERATOR) {
             SyntaxAnalyzer.moveToTheNextLexeme()
             return ASTNode(GrammarSymbols.UNARY_OPERATOR, lexeme)
         }
@@ -35,7 +35,7 @@ class OperatorSign(){
     // "("
     fun leftBrace(): Boolean {
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.LBRACE) {
+        if(lexeme.type == LexemeType.LBRACE) {
             SyntaxAnalyzer.moveToTheNextLexeme()
             return true
         }
@@ -45,7 +45,7 @@ class OperatorSign(){
     // ")"
     fun rightBrace(): Boolean {
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.RBRACE) {
+        if(lexeme.type == LexemeType.RBRACE) {
             SyntaxAnalyzer.moveToTheNextLexeme()
             return true
         }
@@ -55,7 +55,7 @@ class OperatorSign(){
     // "IF"
     fun ifSign(): ASTNode? {
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.IF) {
+        if(lexeme.type == LexemeType.IF) {
             SyntaxAnalyzer.moveToTheNextLexeme()
             return ASTNode(GrammarSymbols.IF, lexeme)
         }
@@ -65,7 +65,7 @@ class OperatorSign(){
     // "THEN"
     fun then(): ASTNode? {
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.THEN) {
+        if(lexeme.type == LexemeType.THEN) {
             SyntaxAnalyzer.moveToTheNextLexeme()
             return ASTNode(GrammarSymbols.THEN, lexeme)
         }
@@ -75,7 +75,7 @@ class OperatorSign(){
     // "ELSE"
     fun elseSign(): ASTNode? {
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.ELSE) {
+        if(lexeme.type == LexemeType.ELSE) {
             SyntaxAnalyzer.moveToTheNextLexeme()
             return ASTNode(GrammarSymbols.ELSE, lexeme)
         }
@@ -84,14 +84,14 @@ class OperatorSign(){
 
     fun isElse(): Boolean {
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.ELSE)
+        if(lexeme.type == LexemeType.ELSE)
             return true
         return false
     }
 
     fun comma(): Boolean{
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.COMMA){
+        if(lexeme.type == LexemeType.COMMA){
             SyntaxAnalyzer.moveToTheNextLexeme()
             return true
         }
@@ -100,7 +100,7 @@ class OperatorSign(){
 
     fun assignmentSign(): ASTNode? {
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.DECLARE) {
+        if(lexeme.type == LexemeType.DECLARE) {
             SyntaxAnalyzer.moveToTheNextLexeme()
             return ASTNode(GrammarSymbols.ASSIGNMENT_SIGN, lexeme)
         }

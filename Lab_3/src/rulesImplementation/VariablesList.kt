@@ -25,7 +25,7 @@ class VariablesList{
 
     //<Продолжение списка переменных> ::= Ɛ | , <Список переменных>
     private fun continueOfVariablesList(): List<ASTNode?>{
-        if(lineBreak())
+        if(SyntaxAnalyzer.removeLineBreak())
             return emptyList()
 
         return commaWithVariables()
@@ -52,15 +52,6 @@ class VariablesList{
         }
 
         return variablesListNode.getChildren()
-    }
-
-    private fun lineBreak(): Boolean{
-        val lexeme = SyntaxAnalyzer.getCurrentLexeme() // gcl()
-        if(lexeme.type == LexemType.LINEBREAK){
-            ErrorLog.nextLine()
-            return true
-        }
-        return false
     }
 
 }

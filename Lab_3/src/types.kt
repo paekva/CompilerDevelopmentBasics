@@ -15,7 +15,7 @@ fun constructTree(parentType: GrammarSymbols, children: ArrayList<ASTNode?>): AS
     return parent
 }
 
-enum class LexemType(val code: Int){
+enum class LexemeType(val code: Int){
     RELATION_OPERATOR(0),
     BIN_MATH_OPERATOR(1),
     UNI_MATH_OPERATOR(2),
@@ -75,4 +75,4 @@ enum class GrammarSymbols(val sign: String, val index: Int){
     DIGIT("<Цифра>", 21)
 }
 
-class Lexem(val type: LexemType, val sign: String)
+class Lexeme(val type: LexemeType, val sign: String)

@@ -23,18 +23,8 @@ class Assignment{
             return null
         }
 
-        removeLineBreak()
+        SyntaxAnalyzer.removeLineBreak()
         return constructTree(GrammarSymbols.ASSIGNMENT, arrayListOf(identifierNode, assignmentSignNode, expressionNode ))
-    }
-
-    private fun removeLineBreak(): Boolean{
-        val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.LINEBREAK) {
-            ErrorLog.nextLine()
-            SyntaxAnalyzer.moveToTheNextLexeme()
-            return true
-        }
-        return false
     }
 
     // <Идент>

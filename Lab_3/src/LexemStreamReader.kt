@@ -1,25 +1,25 @@
 import java.io.File
 
-class LexemStreamReader(private val filePath: String = "E:/lexemTable.txt") {
+class LexemeStreamReader(private val filePath: String = "E:/lexemTable.txt") {
 
-    fun parseLexemParserOutput(): ArrayList<Lexem>{
-        val lexemStringList = readFile()
-        val lexemList = arrayListOf<Lexem>()
-        lexemStringList.forEach { lexem -> lexemList.add(getLexemByString(lexem)) }
-        return lexemList
+    fun parseLexemeParserOutput(): ArrayList<Lexeme>{
+        val lexemeStringList = readFile()
+        val lexemeList = arrayListOf<Lexeme>()
+        lexemeStringList.forEach { lexeme -> lexemeList.add(getLexemeByString(lexeme)) }
+        return lexemeList
     }
 
     private fun readFile(): List<String>
             = File(filePath).readLines(Charsets.UTF_8)
 
-    private fun getLexemByString(lexem: String): Lexem{
+    private fun getLexemeByString(lexeme: String): Lexeme{
         val regex = "<(\\d+),(\\S+)>".toRegex()
-        val matchResult = regex.find(lexem)
+        val matchResult = regex.find(lexeme)
         val (type, sign) = matchResult!!.destructured
 
-        var lt: LexemType? = LexemType.values().find{ el -> el.code == type.toInt() }
-        if(lt==null) lt = LexemType.UNRECOGNISED
+        var lt: LexemeType? = LexemeType.values().find{ el -> el.code == type.toInt() }
+        if(lt==null) lt = LexemeType.UNRECOGNISED
 
-        return Lexem( lt, sign)
+        return Lexeme( lt, sign)
     }
 }

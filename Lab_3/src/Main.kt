@@ -1,6 +1,6 @@
 fun main(){
-    val lexemeList = LexemStreamReader()
-        .parseLexemParserOutput()
+    val lexemeList = LexemeStreamReader()
+        .parseLexemeParserOutput()
 
     SyntaxAnalyzer.setLexemeList(lexemeList)
     val ast = SyntaxAnalyzer.beginAnalise()

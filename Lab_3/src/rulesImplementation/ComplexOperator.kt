@@ -57,21 +57,11 @@ class ComplexOperator{
 
         val continueNode = ifThenElse()
 
-        removeLineBreak()
+        SyntaxAnalyzer.removeLineBreak()
 
         val children = arrayListOf<ASTNode?>(ifSignNode, expressionNode, thenSignNode, operatorNode)
         children.addAll(continueNode)
         return children
-    }
-
-    private fun removeLineBreak(): Boolean{
-        val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.LINEBREAK) {
-            ErrorLog.nextLine()
-            SyntaxAnalyzer.moveToTheNextLexeme()
-            return true
-        }
-        return false
     }
 
     // <Оператор>

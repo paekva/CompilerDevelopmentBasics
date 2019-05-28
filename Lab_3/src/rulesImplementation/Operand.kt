@@ -12,7 +12,7 @@ class Operand {
     // <Идент>
     fun identifier(): ASTNode?{
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.IDENTIFIER) {
+        if(lexeme.type == LexemeType.IDENTIFIER) {
             SyntaxAnalyzer.moveToTheNextLexeme()
             return ASTNode(GrammarSymbols.IDENTIFIER, lexeme)
         }
@@ -22,7 +22,7 @@ class Operand {
     // <Const>
     private fun const(): ASTNode?{
         val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-        if(lexeme.type == LexemType.CONST) {
+        if(lexeme.type == LexemeType.CONST) {
             SyntaxAnalyzer.moveToTheNextLexeme()
             return ASTNode(GrammarSymbols.CONST, lexeme)
         }

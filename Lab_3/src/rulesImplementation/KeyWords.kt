@@ -6,9 +6,9 @@ class KeyWords{
         // Begin
         fun begin(): ASTNode? {
             val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-            if (lexeme.type == LexemType.BEGIN) {
+            if (lexeme.type == LexemeType.BEGIN) {
                 SyntaxAnalyzer.moveToTheNextLexeme()
-                removeLineBreak()
+                SyntaxAnalyzer.removeLineBreak()
                 return ASTNode(GrammarSymbols.BEGIN, lexeme)
             }
             return null
@@ -17,7 +17,7 @@ class KeyWords{
         // Var
         fun variable(): ASTNode? {
             val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-            if (lexeme.type == LexemType.VAR) {
+            if (lexeme.type == LexemeType.VAR) {
                 SyntaxAnalyzer.moveToTheNextLexeme()
                 return ASTNode(GrammarSymbols.VAR, lexeme)
             }
@@ -27,9 +27,9 @@ class KeyWords{
         // End
         fun end(): ASTNode? {
             val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-            if (lexeme.type == LexemType.END) {
+            if (lexeme.type == LexemeType.END) {
                 SyntaxAnalyzer.moveToTheNextLexeme()
-                removeLineBreak()
+                SyntaxAnalyzer.removeLineBreak()
                 return ASTNode(GrammarSymbols.END, lexeme)
             }
             return null
@@ -37,17 +37,7 @@ class KeyWords{
 
         fun isEnd(): Boolean {
             val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-            if (lexeme.type == LexemType.END) {
-                return true
-            }
-            return false
-        }
-
-        private fun removeLineBreak(): Boolean {
-            val lexeme = SyntaxAnalyzer.getCurrentLexeme()
-            if (lexeme.type == LexemType.LINEBREAK) {
-                ErrorLog.nextLine()
-                SyntaxAnalyzer.moveToTheNextLexeme()
+            if (lexeme.type == LexemeType.END) {
                 return true
             }
             return false
