@@ -1,5 +1,3 @@
-fun printErrMsg(ruleName: String) = println("problem constructing tree: $ruleName")
-
 fun constructTree(parentType: GrammarSymbols, children: ArrayList<ASTNode?>): ASTNode? {
     if(children.isEmpty())
         return null

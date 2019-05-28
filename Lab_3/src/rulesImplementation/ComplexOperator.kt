@@ -2,7 +2,6 @@ package rulesImplementation
 
 import ASTNode
 import constructTree
-import printErrMsg
 
 class ComplexOperator{
 
@@ -21,10 +20,7 @@ class ComplexOperator{
             children.add(compoundOperatorNode)
         }
 
-        val parent = constructTree(GrammarSymbols.COMPLEX_OPERATOR, children)
-        if(parent == null)
-            printErrMsg("complexOperator")
-        return parent
+        return constructTree(GrammarSymbols.COMPLEX_OPERATOR, children)
     }
 
     // IF < Выражение> THEN <Оператор> <Продолжение IF THEN>

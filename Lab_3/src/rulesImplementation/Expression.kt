@@ -2,7 +2,6 @@ package rulesImplementation
 
 import ASTNode
 import constructTree
-import printErrMsg
 
 class Expression{
 
@@ -19,10 +18,7 @@ class Expression{
 
         children.add(subExpressionNode)
 
-        val parent = constructTree(GrammarSymbols.EXPRESSION, children)
-        if(parent == null)
-            printErrMsg("expression")
-        return parent
+        return constructTree(GrammarSymbols.EXPRESSION, children)
     }
 
     //  <Ун.оп.>
