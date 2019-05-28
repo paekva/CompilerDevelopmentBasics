@@ -44,9 +44,11 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
         val keyWordsService = KeyWords(::getCurrentLexeme, ::moveToTheNextLexeme)
 
         val beginNode = keyWordsService.begin()
-        val operatorsListNode = operatorsList()
-        val endNode = keyWordsService.end()
+        lineBreak()
 
+        val operatorsListNode = operatorsList()
+
+        val endNode = keyWordsService.end()
         lineBreak()
 
         val parent = constructTree(GrammarSymbols.DECLARE_VARIABLES, arrayListOf(beginNode, operatorsListNode, endNode))

@@ -37,7 +37,7 @@ class VariablesList (private val getCurrentLexeme: currentLexeme, private val mo
 
     // , <Список переменных>
     private fun commaWithVariables(): List<ASTNode?> {
-        if(!comma())
+        if(!OperatorSign(getCurrentLexeme, moveToTheNextLexeme).comma())
             return emptyList()
 
         val variablesListNode = analyze()
@@ -54,12 +54,4 @@ class VariablesList (private val getCurrentLexeme: currentLexeme, private val mo
         return false
     }
 
-    private fun comma(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.COMMA){
-            moveToTheNextLexeme()
-            return true
-        }
-        return false
-    }
 }

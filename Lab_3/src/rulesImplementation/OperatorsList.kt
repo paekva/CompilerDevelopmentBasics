@@ -8,13 +8,9 @@ import printErrMsg
 //<Список операторов> ::= <Оператор> | <Оператор> <Список операторов>
 class OperatorsList(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
 
-    // <Список операторов> ::= <Оператор><Продолжение списка >
+    // <Список операторов> ::= <Оператор><Продолжение списка операторов>
     fun analyze(): ASTNode?{
-        val operatorNode = operator()
-        val continueOfOperatorListNode = continueOfOperatorList()
-
-        val children = arrayListOf(operatorNode)
-        children.addAll(continueOfOperatorListNode)
+        val children = operatorsList()
 
         val parent = constructTree(GrammarSymbols.OPERATORS_LIST, children)
         if(parent == null)
@@ -22,35 +18,33 @@ class OperatorsList(private val getCurrentLexeme: currentLexeme, private val mov
         return parent
     }
 
-    // <Продолжение списка операторов> ::= Ɛ | ,<Список операторов>
+    // <Список операторов> ::= <Оператор><Продолжение списка операторов>
+    private fun operatorsList(): ArrayList<ASTNode?> {
+        val children = arrayListOf<ASTNode?>()
+
+        val operatorNode = operator()
+        children.add(operatorNode)
+
+        val lexeme = getCurrentLexeme()
+
+        val continueOfOperatorListNode = continueOfOperatorList()
+        children.addAll(continueOfOperatorListNode)
+
+        return children
+    }
+
+    // <Продолжение списка операторов> ::= Ɛ | <Список операторов>
     private fun continueOfOperatorList(): List<ASTNode?>{
-        if(lineBreak())
+        val lexeme = getCurrentLexeme()
+
+        if(KeyWords(getCurrentLexeme, moveToTheNextLexeme).isEnd())
             return emptyList()
 
-        return commaWithOperators()
+        return operatorsList()
     }
 
     // <Оператор>
     private fun operator(): ASTNode? {
         return Operator(getCurrentLexeme, moveToTheNextLexeme).analyze()
     }
-
-    // , <Список операторов>
-    private fun commaWithOperators(): List<ASTNode?> {
-        val operatorsListNode = analyze()
-        if(operatorsListNode == null)
-            return emptyList()
-
-        return operatorsListNode.getChildren()
-    }
-
-    private fun lineBreak(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.LINEBREAK){
-            moveToTheNextLexeme()
-            return true
-        }
-        return false
-    }
-
 }

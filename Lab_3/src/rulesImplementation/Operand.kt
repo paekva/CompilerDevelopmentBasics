@@ -20,6 +20,7 @@ class Operand(private val getCurrentLexeme: currentLexeme, private val moveToThe
         val lexeme = getCurrentLexeme.invoke()
         if(lexeme.type == LexemType.IDENTIFIER) {
             moveToTheNextLexeme.invoke()
+            val lexeme = getCurrentLexeme.invoke()
             return ASTNode(GrammarSymbols.IDENTIFIER, lexeme)
         }
         return null

@@ -34,4 +34,12 @@ class KeyWords(private val getCurrentLexeme: currentLexeme, private val moveToTh
         }
         return null
     }
+
+    fun isEnd(): Boolean{
+        val lexeme = getCurrentLexeme.invoke()
+        if(lexeme.type == LexemType.END) {
+            return true
+        }
+        return false
+    }
 }

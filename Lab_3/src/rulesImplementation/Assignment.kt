@@ -9,11 +9,7 @@ class Assignment(private val getCurrentLexeme: currentLexeme, private val moveTo
     // <Присваивание> ::= <Идент> := <Выражение>
     fun analyze(): ASTNode? {
         val identifierNode = identifier()
-        moveToTheNextLexeme()
-
         val assignmentSignNode = assignment()
-        moveToTheNextLexeme()
-
         val expressionNode = expression()
         moveToTheNextLexeme()
 
@@ -34,6 +30,7 @@ class Assignment(private val getCurrentLexeme: currentLexeme, private val moveTo
     private fun assignment(): ASTNode?{
         val lexeme = getCurrentLexeme.invoke()
         if(lexeme.type == LexemType.DECLARE) {
+            moveToTheNextLexeme()
             return ASTNode(GrammarSymbols.ASSIGNMENT_SIGN, lexeme)
         }
         return null
@@ -41,6 +38,6 @@ class Assignment(private val getCurrentLexeme: currentLexeme, private val moveTo
 
     // <Выражение>
     private fun expression(): ASTNode?{
-        return  Expression(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        return Expression(getCurrentLexeme, moveToTheNextLexeme).analyze()
     }
 }

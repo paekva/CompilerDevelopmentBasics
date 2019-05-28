@@ -1,7 +1,7 @@
 class ASTNode(private val type: GrammarSymbols, private val lexem: Lexem?) {
 
     private var parent: ASTNode? = null
-    private val children: ArrayList<ASTNode> = arrayListOf<ASTNode>()
+    private val children: ArrayList<ASTNode> = arrayListOf()
 
     fun addChild(child: ASTNode){
         val prevParent = child.getParent()
