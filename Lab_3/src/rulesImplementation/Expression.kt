@@ -9,7 +9,6 @@ class Expression (private val getCurrentLexeme: currentLexeme, private val moveT
 
     // <Выражение> ::= <Ун.оп.> <Подвыражение> | <Подвыражение>
     fun analyze(): ASTNode?{
-        val lexeme = getCurrentLexeme()
         val children = arrayListOf<ASTNode?>()
 
         val unaryNode = unaryOperator()
@@ -17,6 +16,8 @@ class Expression (private val getCurrentLexeme: currentLexeme, private val moveT
             children.add(unaryNode)
 
         val subExpressionNode = SubExpression(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        subExpressionNode ?: return null
+
         children.add(subExpressionNode)
 
         val parent = constructTree(GrammarSymbols.EXPRESSION, children)

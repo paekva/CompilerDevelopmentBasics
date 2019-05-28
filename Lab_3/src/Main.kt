@@ -1,10 +1,8 @@
 fun main(){
-    val lexemList = LexemStreamReader()
+    val lexemeList = LexemStreamReader()
         .parseLexemParserOutput()
 
-    // lexemList.forEach { l -> println("${l.type} ${l.sign}") }
-
-    val ast = SyntaxAnalyzer(lexemList).beginAnalise()
+    val ast = SyntaxAnalyzer(lexemeList).beginAnalise()
     printAST(ast)
 }
 
@@ -12,9 +10,9 @@ fun printAST(astNode: ASTNode?){
     if(astNode == null)
         println("Cannot produce the tree")
     else {
-        if(astNode.lexem != null) println("${astNode.type.sign} ${astNode.lexem.sign}")
+        if(astNode.lexeme != null) println(astNode.lexeme.sign)
+        else println("${astNode.type.sign} -->")
         astNode.getChildren().forEach{
-            println("-->\t")
             printAST(it)
         }
     }

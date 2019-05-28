@@ -3,18 +3,14 @@ package rulesImplementation
 import ASTNode
 import constructTree
 import currentLexeme
-import printErrMsg
 
 class Operator(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme){
 
     // <Оператор>::= <Присваивание>|<Сложный оператор>
     fun analyze(): ASTNode? {
-        val lexeme = getCurrentLexeme()
-
         val children: ArrayList<ASTNode?> = arrayListOf()
 
         val assignmentNode = Assignment(getCurrentLexeme, moveToTheNextLexeme).analyze()
-        val lexem = getCurrentLexeme()
         if(assignmentNode!=null)
             children.add(assignmentNode)
         else {
@@ -23,10 +19,7 @@ class Operator(private val getCurrentLexeme: currentLexeme, private val moveToTh
         }
 
         removeLineBreak()
-        val parent = constructTree(GrammarSymbols.OPERATOR, children)
-        if (parent == null)
-            printErrMsg("operator")
-        return parent
+        return constructTree(GrammarSymbols.OPERATOR, children)
     }
 
     private fun removeLineBreak(): Boolean{

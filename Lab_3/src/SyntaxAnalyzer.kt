@@ -52,7 +52,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
         val endNode = keyWordsService.end()
         lineBreak()
 
-        val parent = constructTree(GrammarSymbols.DECLARE_VARIABLES, arrayListOf(beginNode, operatorsListNode, endNode))
+        val parent = constructTree(GrammarSymbols.DECLARE_CALCULATIONS, arrayListOf(beginNode, operatorsListNode, endNode))
         if(parent == null)
             printErrMsg("declareCalculations")
         return parent

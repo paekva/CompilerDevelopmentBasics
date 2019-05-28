@@ -7,12 +7,8 @@ class Operand(private val getCurrentLexeme: currentLexeme, private val moveToThe
 
     // <Операнд> ::= <Идент> | <Const>
     fun analyze(): ASTNode?{
-        var node = identifier()
-
-        if(node==null)
-            node = const()
-
-        return node
+        val node = identifier()
+        return node ?: const()
     }
 
     // <Идент>
@@ -26,7 +22,7 @@ class Operand(private val getCurrentLexeme: currentLexeme, private val moveToThe
     }
 
     // <Const>
-    fun const(): ASTNode?{
+    private fun const(): ASTNode?{
         val lexeme = getCurrentLexeme.invoke()
         if(lexeme.type == LexemType.CONST) {
             moveToTheNextLexeme.invoke()

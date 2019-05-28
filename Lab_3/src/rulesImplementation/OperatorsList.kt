@@ -25,8 +25,6 @@ class OperatorsList(private val getCurrentLexeme: currentLexeme, private val mov
         val operatorNode = operator()
         children.add(operatorNode)
 
-        val lexeme = getCurrentLexeme()
-
         val continueOfOperatorListNode = continueOfOperatorList()
         children.addAll(continueOfOperatorListNode)
 
@@ -35,8 +33,6 @@ class OperatorsList(private val getCurrentLexeme: currentLexeme, private val mov
 
     // <Продолжение списка операторов> ::= Ɛ | <Список операторов>
     private fun continueOfOperatorList(): List<ASTNode?>{
-        val lexeme = getCurrentLexeme()
-
         if(KeyWords(getCurrentLexeme, moveToTheNextLexeme).isEnd())
             return emptyList()
 

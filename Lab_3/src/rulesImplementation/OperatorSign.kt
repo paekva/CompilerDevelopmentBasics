@@ -84,4 +84,13 @@ class OperatorSign(private val getCurrentLexeme: currentLexeme, private val move
         }
         return false
     }
+
+    fun assigmentSign(): ASTNode? {
+        val lexeme = getCurrentLexeme.invoke()
+        if(lexeme.type == LexemType.DECLARE) {
+            moveToTheNextLexeme()
+            return ASTNode(GrammarSymbols.ASSIGNMENT_SIGN, lexeme)
+        }
+        return null
+    }
 }

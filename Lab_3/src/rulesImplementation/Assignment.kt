@@ -9,20 +9,15 @@ class Assignment(private val getCurrentLexeme: currentLexeme, private val moveTo
     // <Присваивание> ::= <Идент> := <Выражение>
     fun analyze(): ASTNode? {
         val identifierNode = identifier()
-        if(identifierNode == null)
-            return null
+        identifierNode ?: return null
 
         val assignmentSignNode = assignment()
-        if(assignmentSignNode == null)
-            return null
+        assignmentSignNode ?: return null
 
         val expressionNode = expression()
+        expressionNode ?: return null
 
-        val parent = constructTree(GrammarSymbols.ASSIGNMENT, arrayListOf(identifierNode, assignmentSignNode, expressionNode ))
-        if(parent == null)
-            printErrMsg("assignment")
-
-        return parent
+        return constructTree(GrammarSymbols.ASSIGNMENT, arrayListOf(identifierNode, assignmentSignNode, expressionNode ))
     }
 
 
@@ -33,12 +28,7 @@ class Assignment(private val getCurrentLexeme: currentLexeme, private val moveTo
 
     // :=
     private fun assignment(): ASTNode?{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.DECLARE) {
-            moveToTheNextLexeme()
-            return ASTNode(GrammarSymbols.ASSIGNMENT_SIGN, lexeme)
-        }
-        return null
+        return OperatorSign(getCurrentLexeme, moveToTheNextLexeme).assigmentSign()
     }
 
     // <Выражение>

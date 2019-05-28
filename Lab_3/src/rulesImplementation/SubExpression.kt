@@ -5,107 +5,90 @@ import ASTNode
 import constructTree
 import printErrMsg
 
-// <Подвыражение> :: = ( <Выражение> ) | <Операнд> | <Подвыражение > <Бин.оп.> <Подвыражение>
 class SubExpression(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
 
     // <Подвыражение> :: = ( <Выражение> ) <Вспомогательное выражение>  | <Операнд> <Вспомогательное выражение>
     fun analyze(): ASTNode? {
+        val lex = getCurrentLexeme()
         val children: ArrayList<ASTNode?> = arrayListOf()
-        val lexeme = getCurrentLexeme()
 
-        val bracedExpressionNode = bracedExpression()
-        if(bracedExpressionNode==null){
+        val bracedExpressionNode = startsWithBracedExpression()
+        if(bracedExpressionNode.isEmpty()){
             val subExpressionWithOperandNode = subExpressionWithOperand()
-            children.add(subExpressionWithOperandNode)
+            children.addAll(subExpressionWithOperandNode)
         }
-        else children.add(bracedExpressionNode)
+        else children.addAll(bracedExpressionNode)
 
-        val parent = constructTree(GrammarSymbols.SUB_EXPRESSION, children)
-        if (parent == null)
-            printErrMsg("subExpression")
-        return parent
+        return constructTree(GrammarSymbols.SUB_EXPRESSION, children)
     }
 
-    // <Подвыражение> :: = ( <Выражение> ) <Вспомогательное выражение>
-    private fun bracedExpression(): ASTNode? {
+    // ( <Выражение> ) <Вспомогательное выражение>
+    private fun startsWithBracedExpression(): List<ASTNode?> {
         val children: ArrayList<ASTNode?> = arrayListOf()
-        val lexeme = getCurrentLexeme()
+
+        val bracedExpressionNode = bracedExpression()
+        bracedExpressionNode ?: return emptyList()
+        children.add(bracedExpressionNode)
+
+        val helpfulExpressionNode = helpfulExpression()
+        children.addAll(helpfulExpressionNode)
+
+        return children
+    }
+
+    // ( <Выражение> )
+    private fun bracedExpression(): ASTNode? {
         val operatorSignService = OperatorSign(getCurrentLexeme, moveToTheNextLexeme)
 
         if(!operatorSignService.leftBrace())
             return null
 
-        val lexem = getCurrentLexeme()
-
         val expressionNode = Expression(getCurrentLexeme, moveToTheNextLexeme).analyze()
-        children.add(expressionNode)
+        expressionNode?: return null
 
         if(!operatorSignService.rightBrace())
             return null
 
-        val helpfulExpressionNode = helpfulExpression()
-        if(helpfulExpressionNode!= null)
-            children.add(helpfulExpressionNode)
-
-        val parent = constructTree(GrammarSymbols.ASSIGNMENT, children)
-        if (parent == null)
-            printErrMsg("bracedExpression")
-        return parent
+        return expressionNode
     }
 
-    // <Подвыражение> :: = <Операнд> <Вспомогательное выражение>
-    private fun subExpressionWithOperand(): ASTNode? {
+    // <Операнд> <Вспомогательное выражение>
+    private fun subExpressionWithOperand(): ArrayList<ASTNode?> {
         val children: ArrayList<ASTNode?> = arrayListOf()
+
         val operandNode = operand()
+        operandNode ?: return arrayListOf()
         children.add(operandNode)
 
-
-        val lexem = getCurrentLexeme()
         val helpfulExpressionNode = helpfulExpression()
-        if(helpfulExpressionNode!= null)
-            children.add(helpfulExpressionNode)
+        if(helpfulExpressionNode.isEmpty())
+            children.addAll(helpfulExpressionNode)
 
-        val parent = constructTree(GrammarSymbols.SUB_EXPRESSION, children)
-        if (parent == null)
-            printErrMsg("subExpression")
-        return parent
+        return children
     }
 
     // <Вспомогательное выражение> :: = <Бин.оп.><Подвыражение><Вспомогательное выражение> | Ɛ
-    private fun helpfulExpression(): ASTNode?{
-        val lexem = getCurrentLexeme()
+    private fun helpfulExpression(): ArrayList<ASTNode?>{
         if(lineBreak())
-            return null
+            return arrayListOf()
 
-        val subExpressionsWithBinaryOperatorNodeList = subExpressionsWithBinaryOperator()
-
-        if(subExpressionsWithBinaryOperatorNodeList.isEmpty())
-            return null
-
-        val parent = constructTree(GrammarSymbols.SUB_EXPRESSION, subExpressionsWithBinaryOperatorNodeList)
-        if (parent == null)
-            printErrMsg("subExpression")
-        return parent
-
+        return subExpressionsWithBinaryOperator()
     }
 
     // <Бин.оп.><Подвыражение><Вспомогательное выражение>
     private fun subExpressionsWithBinaryOperator(): ArrayList<ASTNode?>{
         val children: ArrayList<ASTNode?> = arrayListOf()
-        val LEXEM = getCurrentLexeme.invoke()
 
         val binaryOperator = binaryOperator()
-        if(binaryOperator==null)
-            return arrayListOf()
-
+        binaryOperator ?: return arrayListOf()
         children.add(binaryOperator)
 
         val subExpressionNode = analyze()
+        subExpressionNode ?: return arrayListOf()
         children.add(subExpressionNode)
 
         val helpfulExpressionNode = helpfulExpression()
-        if(helpfulExpressionNode!= null)
-            children.add(helpfulExpressionNode)
+        children.addAll(helpfulExpressionNode)
 
         return children
     }
