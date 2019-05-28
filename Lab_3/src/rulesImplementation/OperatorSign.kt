@@ -2,17 +2,24 @@ package rulesImplementation
 
 import currentLexeme
 import ASTNode
+import GrammarSymbols
 
 class OperatorSign(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme){
 
     // "-" | "+" | "*" | "/" | ">>" | "<<" | ">" | "<" | "="
     fun binaryOperator(): ASTNode? {
         val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.BIN_MATH_OPERATOR) {
+        if(lexeme.type == LexemType.BIN_MATH_OPERATOR || lexeme.type == LexemType.RELATION_OPERATOR) {
             moveToTheNextLexeme.invoke()
-            return ASTNode(GrammarSymbols.BINARY_OPERATOR, lexeme)
+
+            val operatorType: GrammarSymbols = findOperatorType(lexeme.sign)
+            return ASTNode(operatorType, lexeme)
         }
         return null
+    }
+
+    private fun findOperatorType(value: String): GrammarSymbols {
+        return GrammarSymbols.values().filter { it.sign == value }[0]
     }
 
     // "-"
@@ -74,6 +81,13 @@ class OperatorSign(private val getCurrentLexeme: currentLexeme, private val move
             return ASTNode(GrammarSymbols.ELSE, lexeme)
         }
         return null
+    }
+
+    fun isElse(): Boolean {
+        val lexeme = getCurrentLexeme.invoke()
+        if(lexeme.type == LexemType.ELSE)
+            return true
+        return false
     }
 
     fun comma(): Boolean{

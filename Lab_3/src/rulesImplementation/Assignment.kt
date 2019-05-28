@@ -17,9 +17,18 @@ class Assignment(private val getCurrentLexeme: currentLexeme, private val moveTo
         val expressionNode = expression()
         expressionNode ?: return null
 
+        removeLineBreak()
         return constructTree(GrammarSymbols.ASSIGNMENT, arrayListOf(identifierNode, assignmentSignNode, expressionNode ))
     }
 
+    private fun removeLineBreak(): Boolean{
+        val lexeme = getCurrentLexeme.invoke()
+        if(lexeme.type == LexemType.LINEBREAK) {
+            moveToTheNextLexeme()
+            return true
+        }
+        return false
+    }
 
     // <Идент>
     private fun identifier(): ASTNode?{

@@ -18,16 +18,6 @@ class Operator(private val getCurrentLexeme: currentLexeme, private val moveToTh
             children.add(complexOperatorNode)
         }
 
-        removeLineBreak()
         return constructTree(GrammarSymbols.OPERATOR, children)
-    }
-
-    private fun removeLineBreak(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.LINEBREAK) {
-            moveToTheNextLexeme()
-            return true
-        }
-        return false
     }
 }

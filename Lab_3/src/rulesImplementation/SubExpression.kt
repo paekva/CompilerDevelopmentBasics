@@ -19,6 +19,9 @@ class SubExpression(private val getCurrentLexeme: currentLexeme, private val mov
         }
         else children.addAll(bracedExpressionNode)
 
+        if(children.size == 1)
+            return children[0]
+
         return constructTree(GrammarSymbols.SUB_EXPRESSION, children)
     }
 
@@ -61,8 +64,7 @@ class SubExpression(private val getCurrentLexeme: currentLexeme, private val mov
         children.add(operandNode)
 
         val helpfulExpressionNode = helpfulExpression()
-        if(helpfulExpressionNode.isEmpty())
-            children.addAll(helpfulExpressionNode)
+        children.addAll(helpfulExpressionNode)
 
         return children
     }

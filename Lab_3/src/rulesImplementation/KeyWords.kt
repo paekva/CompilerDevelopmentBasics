@@ -10,6 +10,7 @@ class KeyWords(private val getCurrentLexeme: currentLexeme, private val moveToTh
         val lexeme = getCurrentLexeme.invoke()
         if(lexeme.type == LexemType.BEGIN) {
             moveToTheNextLexeme.invoke()
+            removeLineBreak()
             return ASTNode(GrammarSymbols.BEGIN, lexeme)
         }
         return null
@@ -30,6 +31,7 @@ class KeyWords(private val getCurrentLexeme: currentLexeme, private val moveToTh
         val lexeme = getCurrentLexeme.invoke()
         if(lexeme.type == LexemType.END) {
             moveToTheNextLexeme.invoke()
+            removeLineBreak()
             return ASTNode(GrammarSymbols.END, lexeme)
         }
         return null
@@ -38,6 +40,15 @@ class KeyWords(private val getCurrentLexeme: currentLexeme, private val moveToTh
     fun isEnd(): Boolean{
         val lexeme = getCurrentLexeme.invoke()
         if(lexeme.type == LexemType.END) {
+            return true
+        }
+        return false
+    }
+
+    private fun removeLineBreak(): Boolean{
+        val lexeme = getCurrentLexeme.invoke()
+        if(lexeme.type == LexemType.LINEBREAK) {
+            moveToTheNextLexeme()
             return true
         }
         return false

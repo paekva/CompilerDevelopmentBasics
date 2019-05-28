@@ -46,12 +46,21 @@ class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val 
 
         val continueNode = ifThenElse()
 
+        removeLineBreak()
 
         val children = arrayListOf<ASTNode?>(ifSignNode, expressionNode, thenSignNode, operatorNode)
         children.addAll(continueNode)
         return children
     }
 
+    private fun removeLineBreak(): Boolean{
+        val lexeme = getCurrentLexeme.invoke()
+        if(lexeme.type == LexemType.LINEBREAK) {
+            moveToTheNextLexeme()
+            return true
+        }
+        return false
+    }
 
     // <Оператор>
     private fun operator(): ASTNode? {
@@ -61,9 +70,10 @@ class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val 
     //  <Продолжение IF THEN> ::= Ɛ | ELSE <Оператор>
     private fun ifThenElse(): ArrayList<ASTNode?>{
         val children: ArrayList<ASTNode?> = arrayListOf()
+        val operatorSignService = OperatorSign(getCurrentLexeme, moveToTheNextLexeme)
 
-        if(!lineBreak()){
-            val elseSignNode = OperatorSign(getCurrentLexeme, moveToTheNextLexeme).elseSign()
+        if(operatorSignService.isElse()){
+            val elseSignNode = operatorSignService.elseSign()
             children.add(elseSignNode)
             val operatorNode = Operator(getCurrentLexeme, moveToTheNextLexeme).analyze()
             children.add(operatorNode)
@@ -75,14 +85,5 @@ class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val 
     // <Составной оператор>
     private fun compoundOperator(): ASTNode? {
         return CompoundOperator(getCurrentLexeme, moveToTheNextLexeme).analyze()
-    }
-
-    private fun lineBreak(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.LINEBREAK){
-            moveToTheNextLexeme()
-            return true
-        }
-        return false
     }
 }
