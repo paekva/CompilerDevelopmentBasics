@@ -52,9 +52,9 @@ class LexicalAnalyzer(private val charBuffer: CharArray) {
             "Begin" -> return LexemType.BEGIN
             "Var" -> return LexemType.VAR
             "End" -> return LexemType.END
-            "If" -> return LexemType.IF
-            "Then" -> return LexemType.THEN
-            "Else" -> return LexemType.ELSE
+            "IF" -> return LexemType.IF
+            "THEN" -> return LexemType.THEN
+            "ELSE" -> return LexemType.ELSE
             ":=" -> return LexemType.DECLARE
             "(" -> return LexemType.LBRACE
             ")" -> return LexemType.RBRACE
