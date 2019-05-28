@@ -9,9 +9,14 @@ class Assignment(private val getCurrentLexeme: currentLexeme, private val moveTo
     // <Присваивание> ::= <Идент> := <Выражение>
     fun analyze(): ASTNode? {
         val identifierNode = identifier()
+        if(identifierNode == null)
+            return null
+
         val assignmentSignNode = assignment()
+        if(assignmentSignNode == null)
+            return null
+
         val expressionNode = expression()
-        moveToTheNextLexeme()
 
         val parent = constructTree(GrammarSymbols.ASSIGNMENT, arrayListOf(identifierNode, assignmentSignNode, expressionNode ))
         if(parent == null)

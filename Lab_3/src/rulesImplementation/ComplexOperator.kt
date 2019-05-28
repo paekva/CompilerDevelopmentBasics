@@ -31,10 +31,23 @@ class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val 
         val operatorSignService = OperatorSign(getCurrentLexeme, moveToTheNextLexeme)
 
         val ifSignNode = operatorSignService.ifSign()
+        if(ifSignNode == null)
+            return null
+
         val expressionNode = Expression(getCurrentLexeme, moveToTheNextLexeme).analyze()
-        val elseSignNode = operatorSignService.elseSign()
-        val operatorNode = Operator(getCurrentLexeme, moveToTheNextLexeme).analyze()
-        val children = arrayListOf(ifSignNode, expressionNode, elseSignNode, operatorNode)
+        if(expressionNode==null)
+            return null
+
+        val thenSignNode = operatorSignService.then()
+        if(thenSignNode == null)
+            return null
+
+        val operatorNode = operator()
+        if(operatorNode==null)
+            return null
+
+        val lexem = getCurrentLexeme()
+        val children = arrayListOf<ASTNode?>(ifSignNode, expressionNode, thenSignNode, operatorNode)
 
         val continueNode = ifThenElse()
         children.addAll(continueNode)
@@ -45,11 +58,19 @@ class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val 
         return parent
     }
 
+
+    // <Оператор>
+    private fun operator(): ASTNode? {
+        return Operator(getCurrentLexeme, moveToTheNextLexeme).analyze()
+    }
+
     //  <Продолжение IF THEN> ::= Ɛ | ELSE <Оператор>
-    private fun ifThenElse(): List<ASTNode?>{
+    private fun ifThenElse(): ArrayList<ASTNode?>{
+        val lexem = getCurrentLexeme()
         val children: ArrayList<ASTNode?> = arrayListOf()
 
         if(!lineBreak()){
+            val lexeme = getCurrentLexeme()
             val elseSignNode = OperatorSign(getCurrentLexeme, moveToTheNextLexeme).elseSign()
             children.add(elseSignNode)
             val operatorNode = Operator(getCurrentLexeme, moveToTheNextLexeme).analyze()

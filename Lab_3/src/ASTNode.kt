@@ -1,4 +1,4 @@
-class ASTNode(private val type: GrammarSymbols, private val lexem: Lexem?) {
+class ASTNode(val type: GrammarSymbols, val lexem: Lexem?) {
 
     private var parent: ASTNode? = null
     private val children: ArrayList<ASTNode> = arrayListOf()
@@ -13,15 +13,7 @@ class ASTNode(private val type: GrammarSymbols, private val lexem: Lexem?) {
         child.setParent(this)
     }
 
-    fun removeChild(child: ASTNode){
-        if(child.getParent() == null)
-            return
-
-        children.remove(child)
-        child.setParent(null)
-    }
-
-    fun getParent(): ASTNode? {
+    private fun getParent(): ASTNode? {
         return parent
     }
 

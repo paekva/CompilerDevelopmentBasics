@@ -79,6 +79,9 @@ class SubExpression(private val getCurrentLexeme: currentLexeme, private val mov
 
         val subExpressionsWithBinaryOperatorNodeList = subExpressionsWithBinaryOperator()
 
+        if(subExpressionsWithBinaryOperatorNodeList.isEmpty())
+            return null
+
         val parent = constructTree(GrammarSymbols.SUB_EXPRESSION, subExpressionsWithBinaryOperatorNodeList)
         if (parent == null)
             printErrMsg("subExpression")
@@ -92,6 +95,9 @@ class SubExpression(private val getCurrentLexeme: currentLexeme, private val mov
         val LEXEM = getCurrentLexeme.invoke()
 
         val binaryOperator = binaryOperator()
+        if(binaryOperator==null)
+            return arrayListOf()
+
         children.add(binaryOperator)
 
         val subExpressionNode = analyze()

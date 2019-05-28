@@ -48,6 +48,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
 
         val operatorsListNode = operatorsList()
 
+        val lexeme = getCurrentLexeme()
         val endNode = keyWordsService.end()
         lineBreak()
 
@@ -68,7 +69,7 @@ class SyntaxAnalyzer(private val lexemList: ArrayList<Lexem>) {
     }
     
     private fun getNextLexeme(){
-        currentLexeme = lexemList[currentLexemeIndex+1]
+        currentLexeme = if(currentLexemeIndex+1<lexemList.size) lexemList[currentLexemeIndex+1] else currentLexeme
         currentLexemeIndex++
     }
 

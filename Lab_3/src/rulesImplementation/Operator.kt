@@ -14,6 +14,7 @@ class Operator(private val getCurrentLexeme: currentLexeme, private val moveToTh
         val children: ArrayList<ASTNode?> = arrayListOf()
 
         val assignmentNode = Assignment(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        val lexem = getCurrentLexeme()
         if(assignmentNode!=null)
             children.add(assignmentNode)
         else {
@@ -21,17 +22,19 @@ class Operator(private val getCurrentLexeme: currentLexeme, private val moveToTh
             children.add(complexOperatorNode)
         }
 
-        lineBreak()
+        removeLineBreak()
         val parent = constructTree(GrammarSymbols.OPERATOR, children)
         if (parent == null)
             printErrMsg("operator")
         return parent
     }
 
-    private fun lineBreak(): Boolean{
+    private fun removeLineBreak(): Boolean{
         val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.LINEBREAK)
+        if(lexeme.type == LexemType.LINEBREAK) {
+            moveToTheNextLexeme()
             return true
+        }
         return false
     }
 }
