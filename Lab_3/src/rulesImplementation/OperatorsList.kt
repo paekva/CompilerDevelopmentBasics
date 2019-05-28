@@ -1,39 +1,34 @@
 package rulesImplementation
 
-import currentLexeme
 import ASTNode
 import constructTree
-import printErrMsg
 
 //<Список операторов> ::= <Оператор> | <Оператор> <Список операторов>
-class OperatorsList(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
+class OperatorsList{
 
     // <Список операторов> ::= <Оператор><Продолжение списка операторов>
     fun analyze(): ASTNode?{
         val children = operatorsList()
-
-        val parent = constructTree(GrammarSymbols.OPERATORS_LIST, children)
-        if(parent == null)
-            printErrMsg("operatorsList")
-        return parent
+        return constructTree(GrammarSymbols.OPERATORS_LIST, children)
     }
 
-    // <Список операторов> ::= <Оператор><Продолжение списка операторов>
+    // <Оператор><Продолжение списка операторов>
     private fun operatorsList(): ArrayList<ASTNode?> {
         val children = arrayListOf<ASTNode?>()
 
         val operatorNode = operator()
-        children.add(operatorNode)
+
+        if(operatorNode!=null)
+            children.add(operatorNode)
 
         val continueOfOperatorListNode = continueOfOperatorList()
         children.addAll(continueOfOperatorListNode)
-
         return children
     }
 
     // <Продолжение списка операторов> ::= Ɛ | <Список операторов>
     private fun continueOfOperatorList(): List<ASTNode?>{
-        if(KeyWords(getCurrentLexeme, moveToTheNextLexeme).isEnd())
+        if(KeyWords.isEnd())
             return emptyList()
 
         return operatorsList()
@@ -41,6 +36,6 @@ class OperatorsList(private val getCurrentLexeme: currentLexeme, private val mov
 
     // <Оператор>
     private fun operator(): ASTNode? {
-        return Operator(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        return Operator().analyze()
     }
 }

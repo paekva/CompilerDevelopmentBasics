@@ -2,20 +2,22 @@ package rulesImplementation
 
 import ASTNode
 import constructTree
-import currentLexeme
 
-class Operator(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme){
+class Operator{
 
     // <Оператор>::= <Присваивание>|<Сложный оператор>
     fun analyze(): ASTNode? {
         val children: ArrayList<ASTNode?> = arrayListOf()
+        var complexOperatorNode: ASTNode?
 
-        val assignmentNode = Assignment(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        val assignmentNode = Assignment().analyze()
+
         if(assignmentNode!=null)
             children.add(assignmentNode)
         else {
-            val complexOperatorNode = ComplexOperator(getCurrentLexeme, moveToTheNextLexeme).analyze()
-            children.add(complexOperatorNode)
+            complexOperatorNode = ComplexOperator().analyze()
+            if(complexOperatorNode!=null)
+                children.add(complexOperatorNode)
         }
 
         return constructTree(GrammarSymbols.OPERATOR, children)

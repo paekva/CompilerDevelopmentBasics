@@ -1,56 +1,56 @@
 package rulesImplementation
 
-import currentLexeme
 import ASTNode
-
-class KeyWords(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme){
-
-    // Begin
-    fun begin(): ASTNode?{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.BEGIN) {
-            moveToTheNextLexeme.invoke()
-            removeLineBreak()
-            return ASTNode(GrammarSymbols.BEGIN, lexeme)
+class KeyWords{
+    companion object {
+        // Begin
+        fun begin(): ASTNode? {
+            val lexeme = SyntaxAnalyzer.getCurrentLexeme()
+            if (lexeme.type == LexemType.BEGIN) {
+                SyntaxAnalyzer.moveToTheNextLexeme()
+                removeLineBreak()
+                return ASTNode(GrammarSymbols.BEGIN, lexeme)
+            }
+            return null
         }
-        return null
-    }
 
-    // Var
-    fun variable(): ASTNode?{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.VAR) {
-            moveToTheNextLexeme.invoke()
-            return ASTNode(GrammarSymbols.VAR, lexeme)
+        // Var
+        fun variable(): ASTNode? {
+            val lexeme = SyntaxAnalyzer.getCurrentLexeme()
+            if (lexeme.type == LexemType.VAR) {
+                SyntaxAnalyzer.moveToTheNextLexeme()
+                return ASTNode(GrammarSymbols.VAR, lexeme)
+            }
+            return null
         }
-        return null
-    }
 
-    // End
-    fun end(): ASTNode?{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.END) {
-            moveToTheNextLexeme.invoke()
-            removeLineBreak()
-            return ASTNode(GrammarSymbols.END, lexeme)
+        // End
+        fun end(): ASTNode? {
+            val lexeme = SyntaxAnalyzer.getCurrentLexeme()
+            if (lexeme.type == LexemType.END) {
+                SyntaxAnalyzer.moveToTheNextLexeme()
+                removeLineBreak()
+                return ASTNode(GrammarSymbols.END, lexeme)
+            }
+            return null
         }
-        return null
-    }
 
-    fun isEnd(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.END) {
-            return true
+        fun isEnd(): Boolean {
+            val lexeme = SyntaxAnalyzer.getCurrentLexeme()
+            if (lexeme.type == LexemType.END) {
+                return true
+            }
+            return false
         }
-        return false
-    }
 
-    private fun removeLineBreak(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.LINEBREAK) {
-            moveToTheNextLexeme()
-            return true
+        private fun removeLineBreak(): Boolean {
+            val lexeme = SyntaxAnalyzer.getCurrentLexeme()
+            if (lexeme.type == LexemType.LINEBREAK) {
+                ErrorLog.nextLine()
+                SyntaxAnalyzer.moveToTheNextLexeme()
+                return true
+            }
+            return false
         }
-        return false
     }
 }

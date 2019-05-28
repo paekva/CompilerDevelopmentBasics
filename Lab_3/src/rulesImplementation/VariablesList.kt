@@ -1,25 +1,26 @@
 package rulesImplementation
 
-import currentLexeme
 import ASTNode
 import constructTree
-import printErrMsg
+import SyntaxAnalyzer
 
 // <Список переменных> ::= <Идент> | <Идент> , <Список переменных>
-class VariablesList (private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
+class VariablesList{
 
     // <Список переменных> ::= <Идент> <Продолжение списка>
     fun analyze(): ASTNode? {
         val identifierNode = identifier()
+        identifierNode ?: run {
+            ErrorLog.logError("Bad variables declaration")
+            SyntaxAnalyzer.skipCurrentLine()
+            return null
+        }
         val continueOfVariablesListNode = continueOfVariablesList()
 
-        val children = arrayListOf(identifierNode)
+        val children = arrayListOf<ASTNode?>()
+        children.add(identifierNode)
         children.addAll(continueOfVariablesListNode)
-
-        val parent = constructTree(GrammarSymbols.OPERATORS_LIST, children)
-        if(parent == null)
-            printErrMsg("variablesList")
-        return parent
+        return constructTree(GrammarSymbols.OPERATORS_LIST, children)
     }
 
     //<Продолжение списка переменных> ::= Ɛ | , <Список переменных>
@@ -32,25 +33,33 @@ class VariablesList (private val getCurrentLexeme: currentLexeme, private val mo
 
     // <Оператор>
     private fun identifier(): ASTNode? {
-        return Operand(getCurrentLexeme, moveToTheNextLexeme).identifier()
+        return Operand().identifier()
     }
 
     // , <Список переменных>
     private fun commaWithVariables(): List<ASTNode?> {
-        if(!OperatorSign(getCurrentLexeme, moveToTheNextLexeme).comma())
+        if(!OperatorSign().comma()){
+            ErrorLog.logError("Comma not found")
+            SyntaxAnalyzer.skipCurrentLine()
             return emptyList()
+        }
 
         val variablesListNode = analyze()
-        if(variablesListNode == null)
+        variablesListNode ?: run {
+            ErrorLog.logError("No variables after comma")
+            SyntaxAnalyzer.skipCurrentLine()
             return emptyList()
+        }
 
         return variablesListNode.getChildren()
     }
 
     private fun lineBreak(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.LINEBREAK)
+        val lexeme = SyntaxAnalyzer.getCurrentLexeme() // gcl()
+        if(lexeme.type == LexemType.LINEBREAK){
+            ErrorLog.nextLine()
             return true
+        }
         return false
     }
 

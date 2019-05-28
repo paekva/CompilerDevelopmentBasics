@@ -1,11 +1,10 @@
 package rulesImplementation
 
-import currentLexeme
 import ASTNode
 import constructTree
 import printErrMsg
 
-class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme){
+class ComplexOperator{
 
     // <Сложный оператор> ::= IF < Выражение> THEN <Оператор> <Продолжение IF THEN> | <Составной оператор>
     fun analyze(): ASTNode?{
@@ -30,19 +29,31 @@ class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val 
 
     // IF < Выражение> THEN <Оператор> <Продолжение IF THEN>
     private fun ifThen(): ArrayList<ASTNode?>{
-        val operatorSignService = OperatorSign(getCurrentLexeme, moveToTheNextLexeme)
+        val operatorSignService = OperatorSign()
 
         val ifSignNode = operatorSignService.ifSign()
         ifSignNode ?: return arrayListOf()
 
-        val expressionNode = Expression(getCurrentLexeme, moveToTheNextLexeme).analyze()
-        expressionNode ?: return arrayListOf()
+        val expressionNode = Expression().analyze()
+        expressionNode ?: run {
+            ErrorLog.logError("Нет выражения после if")
+            SyntaxAnalyzer.skipCurrentLine()
+            return arrayListOf()
+        }
 
         val thenSignNode = operatorSignService.then()
-        thenSignNode ?: return arrayListOf()
+        thenSignNode ?: run {
+            ErrorLog.logError("Нет then после if")
+            SyntaxAnalyzer.skipCurrentLine()
+            return arrayListOf()
+        }
 
         val operatorNode = operator()
-        operatorNode ?: return arrayListOf()
+        operatorNode ?: run {
+            ErrorLog.logError("Нет выражения после then")
+            SyntaxAnalyzer.skipCurrentLine()
+            return arrayListOf()
+        }
 
         val continueNode = ifThenElse()
 
@@ -54,9 +65,10 @@ class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val 
     }
 
     private fun removeLineBreak(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
+        val lexeme = SyntaxAnalyzer.getCurrentLexeme()
         if(lexeme.type == LexemType.LINEBREAK) {
-            moveToTheNextLexeme()
+            ErrorLog.nextLine()
+            SyntaxAnalyzer.moveToTheNextLexeme()
             return true
         }
         return false
@@ -64,18 +76,25 @@ class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val 
 
     // <Оператор>
     private fun operator(): ASTNode? {
-        return Operator(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        return Operator().analyze()
     }
 
     //  <Продолжение IF THEN> ::= Ɛ | ELSE <Оператор>
     private fun ifThenElse(): ArrayList<ASTNode?>{
         val children: ArrayList<ASTNode?> = arrayListOf()
-        val operatorSignService = OperatorSign(getCurrentLexeme, moveToTheNextLexeme)
+        val operatorSignService = OperatorSign()
 
         if(operatorSignService.isElse()){
             val elseSignNode = operatorSignService.elseSign()
             children.add(elseSignNode)
-            val operatorNode = Operator(getCurrentLexeme, moveToTheNextLexeme).analyze()
+
+            val operatorNode = Operator().analyze()
+            operatorNode ?:run {
+                ErrorLog.logError("Нет выражения после else")
+                SyntaxAnalyzer.skipCurrentLine()
+                return arrayListOf()
+            }
+
             children.add(operatorNode)
         }
 
@@ -84,6 +103,6 @@ class ComplexOperator (private val getCurrentLexeme: currentLexeme, private val 
 
     // <Составной оператор>
     private fun compoundOperator(): ASTNode? {
-        return CompoundOperator(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        return CompoundOperator().analyze()
     }
 }

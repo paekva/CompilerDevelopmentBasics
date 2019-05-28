@@ -1,5 +1,3 @@
-
-typealias currentLexeme = () -> Lexem
 fun printErrMsg(ruleName: String) = println("problem constructing tree: $ruleName")
 
 fun constructTree(parentType: GrammarSymbols, children: ArrayList<ASTNode?>): ASTNode? {
@@ -9,7 +7,8 @@ fun constructTree(parentType: GrammarSymbols, children: ArrayList<ASTNode?>): AS
     val parent = ASTNode(parentType, null)
 
     children.forEach { child ->
-        if(child == null ) return null
+        child ?: return parent
+
         parent.addChild(child)
         child.setParent(parent)
     }

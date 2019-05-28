@@ -1,15 +1,12 @@
 package rulesImplementation
 
-import currentLexeme
 import ASTNode
 import constructTree
-import printErrMsg
 
-class SubExpression(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
+class SubExpression{
 
     // <Подвыражение> :: = ( <Выражение> ) <Вспомогательное выражение>  | <Операнд> <Вспомогательное выражение>
     fun analyze(): ASTNode? {
-        val lex = getCurrentLexeme()
         val children: ArrayList<ASTNode?> = arrayListOf()
 
         val bracedExpressionNode = startsWithBracedExpression()
@@ -41,12 +38,12 @@ class SubExpression(private val getCurrentLexeme: currentLexeme, private val mov
 
     // ( <Выражение> )
     private fun bracedExpression(): ASTNode? {
-        val operatorSignService = OperatorSign(getCurrentLexeme, moveToTheNextLexeme)
+        val operatorSignService = OperatorSign()
 
         if(!operatorSignService.leftBrace())
             return null
 
-        val expressionNode = Expression(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        val expressionNode = Expression().analyze()
         expressionNode?: return null
 
         if(!operatorSignService.rightBrace())
@@ -97,19 +94,21 @@ class SubExpression(private val getCurrentLexeme: currentLexeme, private val mov
 
     // <Операнд>
     private fun operand(): ASTNode?{
-        return Operand(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        return Operand().analyze()
     }
 
 
     // <Бин.оп.>
     private fun binaryOperator(): ASTNode? {
-        return OperatorSign(getCurrentLexeme, moveToTheNextLexeme).binaryOperator()
+        return OperatorSign().binaryOperator()
     }
 
     private fun lineBreak(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
-        if(lexeme.type == LexemType.LINEBREAK)
+        val lexeme = SyntaxAnalyzer.getCurrentLexeme()
+        if(lexeme.type == LexemType.LINEBREAK) {
+            ErrorLog.nextLine()
             return true
+        }
         return false
     }
 }

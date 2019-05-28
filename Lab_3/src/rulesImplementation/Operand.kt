@@ -1,9 +1,7 @@
 package rulesImplementation
 
-import currentLexeme
 import ASTNode
-
-class Operand(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
+class Operand {
 
     // <Операнд> ::= <Идент> | <Const>
     fun analyze(): ASTNode?{
@@ -13,9 +11,9 @@ class Operand(private val getCurrentLexeme: currentLexeme, private val moveToThe
 
     // <Идент>
     fun identifier(): ASTNode?{
-        val lexeme = getCurrentLexeme.invoke()
+        val lexeme = SyntaxAnalyzer.getCurrentLexeme()
         if(lexeme.type == LexemType.IDENTIFIER) {
-            moveToTheNextLexeme.invoke()
+            SyntaxAnalyzer.moveToTheNextLexeme()
             return ASTNode(GrammarSymbols.IDENTIFIER, lexeme)
         }
         return null
@@ -23,9 +21,9 @@ class Operand(private val getCurrentLexeme: currentLexeme, private val moveToThe
 
     // <Const>
     private fun const(): ASTNode?{
-        val lexeme = getCurrentLexeme.invoke()
+        val lexeme = SyntaxAnalyzer.getCurrentLexeme()
         if(lexeme.type == LexemType.CONST) {
-            moveToTheNextLexeme.invoke()
+            SyntaxAnalyzer.moveToTheNextLexeme()
             return ASTNode(GrammarSymbols.CONST, lexeme)
         }
         return null

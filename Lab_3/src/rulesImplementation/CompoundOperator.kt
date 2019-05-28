@@ -1,30 +1,36 @@
 package rulesImplementation
 
-import currentLexeme
 import ASTNode
 import constructTree
 
-class CompoundOperator(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
+class CompoundOperator{
 
     // <Составной оператор>::= Begin <Список операторов> End
     fun analyze(): ASTNode?{
-        val keyWordsService = KeyWords(getCurrentLexeme, moveToTheNextLexeme)
+        val beginNode = KeyWords.begin()
+        beginNode ?: run {
+            ErrorLog.logError("Нет begin в начале вложенного блока")
 
-        val beginNode = keyWordsService.begin()
-        beginNode ?: return null
+            SyntaxAnalyzer.skipCurrentLine()
+            return null
+        }
 
         val operatorsListNode = operatorsList()
         operatorsListNode ?: return null
 
-        val endNode = keyWordsService.end()
-        endNode ?: return null
+        val endNode = KeyWords.end()
+        endNode ?: run {
+            ErrorLog.logError("Нет end в конце вложенного блока")
+            SyntaxAnalyzer.skipCurrentLine()
+            return null
+        }
 
         return constructTree(GrammarSymbols.COMPOUND_OPERATOR, arrayListOf(beginNode, operatorsListNode, endNode))
     }
 
     // < Список операторов >
     private fun operatorsList(): ASTNode?{
-        return OperatorsList(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        return OperatorsList().analyze()
     }
 
 }

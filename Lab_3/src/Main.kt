@@ -2,7 +2,10 @@ fun main(){
     val lexemeList = LexemStreamReader()
         .parseLexemParserOutput()
 
-    val ast = SyntaxAnalyzer(lexemeList).beginAnalise()
+    SyntaxAnalyzer.setLexemeList(lexemeList)
+    val ast = SyntaxAnalyzer.beginAnalise()
+
+    ErrorLog.showErrorList()
     printAST(ast, 0)
 }
 

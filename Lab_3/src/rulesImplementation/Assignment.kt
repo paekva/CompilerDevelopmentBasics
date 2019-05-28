@@ -1,10 +1,8 @@
 package rulesImplementation
-import currentLexeme
 import ASTNode
 import constructTree
-import printErrMsg
 
-class Assignment(private val getCurrentLexeme: currentLexeme, private val moveToTheNextLexeme: currentLexeme) {
+class Assignment{
 
     // <Присваивание> ::= <Идент> := <Выражение>
     fun analyze(): ASTNode? {
@@ -12,19 +10,28 @@ class Assignment(private val getCurrentLexeme: currentLexeme, private val moveTo
         identifierNode ?: return null
 
         val assignmentSignNode = assignment()
-        assignmentSignNode ?: return null
+        assignmentSignNode ?: run {
+            ErrorLog.logError("Нет знака присваивания")
+            SyntaxAnalyzer.skipCurrentLine()
+            return null
+        }
 
         val expressionNode = expression()
-        expressionNode ?: return null
+        expressionNode ?: run {
+            ErrorLog.logError("Нет правой части операции присваивания")
+            SyntaxAnalyzer.skipCurrentLine()
+            return null
+        }
 
         removeLineBreak()
         return constructTree(GrammarSymbols.ASSIGNMENT, arrayListOf(identifierNode, assignmentSignNode, expressionNode ))
     }
 
     private fun removeLineBreak(): Boolean{
-        val lexeme = getCurrentLexeme.invoke()
+        val lexeme = SyntaxAnalyzer.getCurrentLexeme()
         if(lexeme.type == LexemType.LINEBREAK) {
-            moveToTheNextLexeme()
+            ErrorLog.nextLine()
+            SyntaxAnalyzer.moveToTheNextLexeme()
             return true
         }
         return false
@@ -32,16 +39,16 @@ class Assignment(private val getCurrentLexeme: currentLexeme, private val moveTo
 
     // <Идент>
     private fun identifier(): ASTNode?{
-        return Operand(getCurrentLexeme, moveToTheNextLexeme).identifier()
+        return Operand().identifier()
     }
 
     // :=
     private fun assignment(): ASTNode?{
-        return OperatorSign(getCurrentLexeme, moveToTheNextLexeme).assigmentSign()
+        return OperatorSign().assignmentSign()
     }
 
     // <Выражение>
     private fun expression(): ASTNode?{
-        return Expression(getCurrentLexeme, moveToTheNextLexeme).analyze()
+        return Expression().analyze()
     }
 }
